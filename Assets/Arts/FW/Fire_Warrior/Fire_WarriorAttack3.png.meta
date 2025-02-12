@@ -49,7 +49,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -63,7 +63,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -260,7 +260,12 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Fire_WarriorAttack3_0: -5103298954574601552
+      Fire_WarriorAttack3_1: -5240348236898340009
+      Fire_WarriorAttack3_2: 1890148364227686490
+      Fire_WarriorAttack3_3: 2466228679713685696
+      Fire_WarriorAttack3_4: 5471164279140487328
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

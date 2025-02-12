@@ -253,7 +253,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -267,7 +267,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -1960,7 +1960,80 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Fire_WarriorSpell2_0: -5510652021920836193
+      Fire_WarriorSpell2_1: -5692884788520164083
+      Fire_WarriorSpell2_10: -55534092792410019
+      Fire_WarriorSpell2_11: 8475036135310443049
+      Fire_WarriorSpell2_12: 5684867830286618079
+      Fire_WarriorSpell2_13: -5269898112585377521
+      Fire_WarriorSpell2_14: -8765297352795729242
+      Fire_WarriorSpell2_15: 2587547871776839890
+      Fire_WarriorSpell2_16: 8258317922650833688
+      Fire_WarriorSpell2_17: 2361710936948310752
+      Fire_WarriorSpell2_18: 2313690562188683319
+      Fire_WarriorSpell2_19: -3000768262926915372
+      Fire_WarriorSpell2_2: 4686352346841939031
+      Fire_WarriorSpell2_20: -7702410729571561229
+      Fire_WarriorSpell2_21: -5674370830710378659
+      Fire_WarriorSpell2_22: 3875100832236031234
+      Fire_WarriorSpell2_23: 5752128475939632237
+      Fire_WarriorSpell2_24: -8636364418006811776
+      Fire_WarriorSpell2_25: -1366130163066394202
+      Fire_WarriorSpell2_26: 1463605711127609549
+      Fire_WarriorSpell2_27: -5027362861372935827
+      Fire_WarriorSpell2_28: 8271800236108658385
+      Fire_WarriorSpell2_29: 1164547569450154456
+      Fire_WarriorSpell2_3: 3260045249258651458
+      Fire_WarriorSpell2_30: 5905108508384913580
+      Fire_WarriorSpell2_31: -4900417891705845106
+      Fire_WarriorSpell2_32: -112119861285073704
+      Fire_WarriorSpell2_33: 2168415867093213166
+      Fire_WarriorSpell2_34: 1011377462993344177
+      Fire_WarriorSpell2_35: 5424320863800039349
+      Fire_WarriorSpell2_36: -7109088613205777662
+      Fire_WarriorSpell2_37: -1356705081376927224
+      Fire_WarriorSpell2_38: -456420394824934715
+      Fire_WarriorSpell2_39: -7761531291285636020
+      Fire_WarriorSpell2_4: 8964810070979252020
+      Fire_WarriorSpell2_40: 2890334723300888624
+      Fire_WarriorSpell2_41: 4491644619118248311
+      Fire_WarriorSpell2_42: -656293902605176367
+      Fire_WarriorSpell2_43: -6896058087795476266
+      Fire_WarriorSpell2_44: -4431987205533878999
+      Fire_WarriorSpell2_45: -319670687028126013
+      Fire_WarriorSpell2_46: 1697626918663261291
+      Fire_WarriorSpell2_47: -7604088710958481394
+      Fire_WarriorSpell2_48: -940372208826973666
+      Fire_WarriorSpell2_49: -5359279582468465558
+      Fire_WarriorSpell2_5: 6390944157804606003
+      Fire_WarriorSpell2_50: 8120214978038101338
+      Fire_WarriorSpell2_51: 5664299723044722895
+      Fire_WarriorSpell2_52: -3835457576159219279
+      Fire_WarriorSpell2_53: 6156345482560570852
+      Fire_WarriorSpell2_54: -3328248951347649135
+      Fire_WarriorSpell2_55: -973759337290720122
+      Fire_WarriorSpell2_56: 8105390244179493488
+      Fire_WarriorSpell2_57: -5654639067437283967
+      Fire_WarriorSpell2_58: 5226177063836670642
+      Fire_WarriorSpell2_59: -5198163473713355757
+      Fire_WarriorSpell2_6: -4976904842808430364
+      Fire_WarriorSpell2_60: 1192020342912448580
+      Fire_WarriorSpell2_61: -5274144082928060447
+      Fire_WarriorSpell2_62: -4000364245560529625
+      Fire_WarriorSpell2_63: 3496071991154271953
+      Fire_WarriorSpell2_64: -3236458292135299686
+      Fire_WarriorSpell2_65: -6967509861421548069
+      Fire_WarriorSpell2_66: 3407176097639725265
+      Fire_WarriorSpell2_67: 2053983645127798690
+      Fire_WarriorSpell2_68: 4323333107351760621
+      Fire_WarriorSpell2_69: 6505817103499923753
+      Fire_WarriorSpell2_7: 8700465562304181604
+      Fire_WarriorSpell2_70: -7808784120628773796
+      Fire_WarriorSpell2_71: 7577451956762864831
+      Fire_WarriorSpell2_72: -1370356091318881700
+      Fire_WarriorSpell2_8: -9217460255801079664
+      Fire_WarriorSpell2_9: 348775252189483059
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
