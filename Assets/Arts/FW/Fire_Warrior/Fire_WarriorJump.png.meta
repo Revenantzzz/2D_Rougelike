@@ -136,11 +136,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 33
-        y: 15
+        y: 0
         width: 40
-        height: 45
+        height: 80
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -157,12 +157,12 @@ TextureImporter:
       name: Fire_WarriorJump_1
       rect:
         serializedVersion: 2
-        x: 178
-        y: 15
-        width: 39
-        height: 45
+        x: 174
+        y: 0
+        width: 45
+        height: 80
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -179,12 +179,12 @@ TextureImporter:
       name: Fire_WarriorJump_2
       rect:
         serializedVersion: 2
-        x: 325
-        y: 15
-        width: 36
-        height: 45
+        x: 320
+        y: 0
+        width: 40
+        height: 80
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -201,7 +201,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 78e389354554b9c4e975b70ad61db53b
     internalID: 0
     vertices: []
     indices: 

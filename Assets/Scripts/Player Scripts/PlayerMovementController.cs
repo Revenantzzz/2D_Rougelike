@@ -4,12 +4,15 @@ using UnityEngine;
 
 namespace Rougelike2D
 {
+  [RequireComponent(typeof(PlayerController))]
     public class PlayerMovementController : MonoBehaviour
     {
-      [SerializeField] InputReader _inputReader;
-      [SerializeField] PlayerData _data;
+      PlayerController _playerController;
+      InputReader _inputReader =>_playerController.InputReader;
+      PlayerMovementStats _movementStats => _playerController.PlayerMovementStats;
+      private CollisionCheck _collisionCheck => _playerController.CollisionCheck;
+
       private Rigidbody2D _rb;
-      private CollisionCheck _collisionCheck;
 
       #region Variables
       private Vector2 _moveDirection;
@@ -17,9 +20,13 @@ namespace Rougelike2D
       public bool IsMoving { get; private set; }
       public bool IsFacingRight { get; private set; }
       public bool IsJumping { get; private set; }
-      public bool IsWallJumping { get; private set; }
       public bool IsFalling { get; private set; }
+      
+      public bool _isJumpFalling{ get; private set; }
       public bool IsSliding { get; private set; }
+
+      public bool IsGrounded => LastOnGroundTime > 0;
+      public bool IsOnWall => LastOnWallTime > 0;
       //Player Timers
       public float LastOnGroundTime { get; private set; }
       public float LastOnWallTime { get; private set; }
@@ -28,25 +35,21 @@ namespace Rougelike2D
 
       //Jump
       private bool _isJumpCut;
-      private bool _isJumpFalling;
-
-      //Wall Jump
-      private float _wallJumpStartTime;
-      private int _lastWallJumpDir;
 
       public float LastPressedJumpTime { get; private set; }
 
       #endregion
       private void Awake() 
       {
+        _playerController = GetComponent<PlayerController>();
         _inputReader.Enable();
         _rb = GetComponent<Rigidbody2D>();
-        _collisionCheck = GetComponentInChildren<CollisionCheck>();
       }
       private void Start() 
       {
         IsFacingRight = true; 
         InputEvent();
+        Application.targetFrameRate = 60;
       }
       private void InputEvent()
       {
@@ -68,18 +71,27 @@ namespace Rougelike2D
       #region Input Handler
       private void MoveInput()
       {
+        if(_playerController.CurrentState == PlayerState.Attacking)
+        {
+          _moveDirection = Vector2.zero;
+          return;
+        }
         _moveDirection = _inputReader.Move;
         Turn();
       } 
       private void JumpInput(bool jumpPressed)
       {
+        if(_playerController.CurrentState == PlayerState.Attacking)
+        {
+          return;
+        }
         if (jumpPressed)
         {
-          LastPressedJumpTime = _data.jumpInputBufferTime;
+          LastPressedJumpTime = _movementStats.jumpInputBufferTime;
         }
         else
         {
-          if(CanJumpCut() || CanWallJumpCut())
+          if(CanJumpCut())
             _isJumpCut = true;
         }
       }
@@ -104,20 +116,18 @@ namespace Rougelike2D
 		    {
           if(_collisionCheck.IsGrounded)
           {
-            LastOnGroundTime = _data.coyoteTime;
+            LastOnGroundTime = _movementStats.coyoteTime;
           }
           if(_collisionCheck.IsOnWall)
           {
-            LastOnWallTime = _data.coyoteTime;
+            LastOnWallTime = _movementStats.coyoteTime;
             if(!IsFacingRight)
             {
-              LastOnWallRightTime = _data.coyoteTime;
-              _lastWallJumpDir = 1;
+              LastOnWallRightTime = _movementStats.coyoteTime;
             }
             else
             {
-              LastOnWallLeftTime = _data.coyoteTime;
-              _lastWallJumpDir = -1;
+              LastOnWallLeftTime = _movementStats.coyoteTime;
             }
           }
           LastOnWallTime = Mathf.Max(LastOnWallRightTime, LastOnWallLeftTime);
@@ -136,33 +146,33 @@ namespace Rougelike2D
         if (_rb.linearVelocity.y < 0 && _moveDirection.y < 0)
         {
           //Much higher gravity if holding down
-          SetGravityScale(_data.gravityScale * _data.fastFallGravityMult);
+          SetGravityScale(_movementStats.gravityScale * _movementStats.fastFallGravityMult);
           //Caps maximum fall speed, so when falling over large distances we don't accelerate to insanely high speeds
-          _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, Mathf.Max(_rb.linearVelocity.y, -_data.maxFastFallSpeed));
+          _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, Mathf.Max(_rb.linearVelocity.y, -_movementStats.maxFastFallSpeed));
           return;
         }
         if (_isJumpCut)
         {
           //Higher gravity if jump button released
-          SetGravityScale(_data.gravityScale * _data.jumpCutGravityMult);
-          _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, Mathf.Max(_rb.linearVelocity.y, -_data.maxFallSpeed));
+          SetGravityScale(_movementStats.gravityScale * _movementStats.jumpCutGravityMult);
+          _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, Mathf.Max(_rb.linearVelocity.y, -_movementStats.maxFallSpeed));
           return;
         }
-        if ((IsJumping || IsWallJumping || _isJumpFalling) && Mathf.Abs(_rb.linearVelocity.y) < _data.jumpHangTimeThreshold)
+        if ((IsJumping || _isJumpFalling) && Mathf.Abs(_rb.linearVelocity.y) < _movementStats.jumpHangTimeThreshold)
         {
-          SetGravityScale(_data.gravityScale * _data.jumpHangGravityMult);
+          SetGravityScale(_movementStats.gravityScale * _movementStats.jumpHangGravityMult);
           return;
         }
         if (_rb.linearVelocity.y < 0)
         {
           //Higher gravity if falling
-          SetGravityScale(_data.gravityScale * _data.fallGravityMult);
+          SetGravityScale(_movementStats.gravityScale * _movementStats.fallGravityMult);
           //Caps maximum fall speed, so when falling over large distances we don't accelerate to insanely high speeds
-          _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, Mathf.Max(_rb.linearVelocity.y, -_data.maxFallSpeed));
+          _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, Mathf.Max(_rb.linearVelocity.y, -_movementStats.maxFallSpeed));
           return;
         }
         //Default gravity if standing on a platform or moving upwards
-        SetGravityScale(_data.gravityScale);
+        SetGravityScale(_movementStats.gravityScale);
       }
       private void SetGravityScale(float gravityScale)
       {
@@ -174,21 +184,21 @@ namespace Rougelike2D
       private void Run(float lerpAmount)
       {
         //Calculate the direction we want to move in and our desired velocity
-        float targetSpeed = _moveDirection.x * _data.runMaxSpeed;
+        float targetSpeed = _moveDirection.x * _movementStats.runMaxSpeed;
         //We can reduce are control using Lerp() this smooths changes to are direction and speed
         targetSpeed = Mathf.Lerp(_rb.linearVelocity.x, targetSpeed, lerpAmount);
 
         float accelRate;
 
         if (LastOnGroundTime > 0)
-          accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ?_data.runAccelAmount :_data.runDeccelAmount;
+          accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ?_movementStats.runAccelAmount :_movementStats.runDeccelAmount;
         else
-          accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ?_data.runAccelAmount *_data.accelInAir :_data.runDeccelAmount *_data.deccelInAir;
+          accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ?_movementStats.runAccelAmount *_movementStats.accelInAir :_movementStats.runDeccelAmount *_movementStats.deccelInAir;
         //Increase are acceleration and maxSpeed when at the apex of their jump, makes the jump feel a bit more bouncy, responsive and natural
-        if ((IsJumping || IsWallJumping || _isJumpFalling) && Mathf.Abs(_rb.linearVelocity.y) < _data.jumpHangTimeThreshold)
+        if ((IsJumping || _isJumpFalling) && Mathf.Abs(_rb.linearVelocity.y) < _movementStats.jumpHangTimeThreshold)
         {
-          accelRate *= _data.jumpHangAccelerationMult;
-          targetSpeed *= _data.jumpHangMaxSpeedMult;
+          accelRate *= _movementStats.jumpHangAccelerationMult;
+          targetSpeed *= _movementStats.jumpHangMaxSpeedMult;
         }
         //Calculate difference between current velocity and desired velocity
         float speedDif = targetSpeed -_rb.linearVelocity.x;
@@ -215,7 +225,7 @@ namespace Rougelike2D
       }
       #endregion
 
-      #region Jump
+      
 
         #region Check Jump Conditions
         private void JumpCheck()
@@ -224,14 +234,9 @@ namespace Rougelike2D
           if (IsJumping && _rb.linearVelocity.y < 0)
           {
             IsJumping = false;
-            if(!IsWallJumping)
-              _isJumpFalling = true;
+            _isJumpFalling = true;
           }
-          if (IsWallJumping && Time.time - _wallJumpStartTime > _data.wallJumpTime)
-          {
-            IsWallJumping = false;
-          }
-          if (LastOnGroundTime > 0 && !IsJumping && !IsWallJumping)
+          if (LastOnGroundTime > 0 && !IsJumping)
           {
             _isJumpCut = false;
             if(!IsJumping)
@@ -240,22 +245,9 @@ namespace Rougelike2D
           if (CanJump() && LastPressedJumpTime > 0)
           {
             IsJumping = true;
-            IsWallJumping = false;
             _isJumpCut = false;
             _isJumpFalling = false;
             Jump();
-          }
-          if (CanWallJump() && LastPressedJumpTime > 0)
-          {
-            IsWallJumping = true;
-            IsJumping = false;
-            _isJumpCut = false;
-            _isJumpFalling = false;
-
-            _wallJumpStartTime = Time.time;
-            _lastWallJumpDir = (LastOnWallRightTime > 0) ? -1 : 1;
-
-            WallJump(_lastWallJumpDir);
           }
         }
         private bool CanJump()
@@ -270,8 +262,6 @@ namespace Rougelike2D
             return false;
           if(LastOnGroundTime > 0)
             return false;
-          if(IsWallJumping && (LastOnWallRightTime < 0 || _lastWallJumpDir != 1) && (LastOnWallLeftTime < 0 || _lastWallJumpDir != -1))
-          return false;
 
           return true;
         }
@@ -279,11 +269,9 @@ namespace Rougelike2D
         {
           return IsJumping && _rb.linearVelocity.y > 0;
         }
-        private bool CanWallJumpCut()
-        {
-          return IsWallJumping && _rb.linearVelocity.y > 0;
-        } 
         #endregion
+      
+      #region Jump
       private void Jump()
       {
         //Ensures we can't call Jump multiple times from one press
@@ -291,31 +279,12 @@ namespace Rougelike2D
 		    LastOnGroundTime = 0;
 
         //We increase the force applied if we are falling
-        float force = _data.jumpForce;
+        float force = _movementStats.jumpForce;
         if (_rb.linearVelocity.y < 0)
           force -= _rb.linearVelocity.y;
 
         _rb.AddForce(Vector2.up * force, ForceMode2D.Impulse);
       } 
-      private void WallJump(int dir)
-      {
-        //Ensures we can't call Wall Jump multiple times from one press
-        LastPressedJumpTime = 0;
-        LastOnGroundTime = 0;
-        LastOnWallRightTime = 0;
-        LastOnWallLeftTime = 0;
-
-        Vector2 force = new Vector2(_data.wallJumpForce.x, _data.wallJumpForce.y);
-        force.x *= dir; //apply force in opposite direction of wall
-
-        if (Mathf.Sign(_rb.linearVelocity.x) != Mathf.Sign(force.x))
-          force.x -= _rb.linearVelocity.x;
-
-        if (_rb.linearVelocity.y < 0) //checks whether player is falling, if so we subtract the velocity.y (counteracting force of gravity). This ensures the player always reaches our desired jump force or greater
-          force.y -= _rb.linearVelocity.y;
-
-        _rb.AddForce(force, ForceMode2D.Impulse);
-      }
       #endregion
   }
 }

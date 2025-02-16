@@ -45,14 +45,14 @@ namespace Rougelike2D
 
                 //Right Wall Check
                 if (((Physics2D.OverlapBox(_frontWallCheckPoint.position, _wallCheckSize, 0, _groundLayer) && _controller.IsFacingRight)
-                    || (Physics2D.OverlapBox(_backWallCheckPoint.position, _wallCheckSize, 0, _groundLayer) && !_controller.IsFacingRight)) && !_controller.IsWallJumping)
+                    || (Physics2D.OverlapBox(_backWallCheckPoint.position, _wallCheckSize, 0, _groundLayer) && !_controller.IsFacingRight)) )
                 {
                     IsOnWall = true;
                 }
 
                 //Left Wall Check
                 else if (((Physics2D.OverlapBox(_frontWallCheckPoint.position, _wallCheckSize, 0, _groundLayer) && !_controller.IsFacingRight)
-                    || (Physics2D.OverlapBox(_backWallCheckPoint.position, _wallCheckSize, 0, _groundLayer) && _controller.IsFacingRight)) && !_controller.IsWallJumping)
+                    || (Physics2D.OverlapBox(_backWallCheckPoint.position, _wallCheckSize, 0, _groundLayer) && _controller.IsFacingRight)) )
                 {
                     IsOnWall = true;
                 }

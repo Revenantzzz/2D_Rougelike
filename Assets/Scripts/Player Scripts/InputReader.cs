@@ -11,6 +11,9 @@ namespace Rougelike2D
         private InputSystem_Actions _inputActions;
 
         public UnityAction<bool> OnPlayerJump = delegate { };
+        public UnityAction<bool> OnPlayerAttack = delegate { };
+        public UnityAction<bool> OnPlayerInteract = delegate { };
+        public UnityAction<bool> OnPlayerCrouch = delegate { };
         public Vector2 Move => _inputActions.Player.Move.ReadValue<Vector2>();
 
         public void Enable()
@@ -50,7 +53,14 @@ namespace Rougelike2D
 
         public void OnAttack(InputAction.CallbackContext context)
         {
-
+            if(context.started)
+            {
+                OnPlayerAttack?.Invoke(true);
+            }
+            else if(context.canceled)
+            {
+                OnPlayerAttack?.Invoke(false);
+            }
         }
 
         public void OnInteract(InputAction.CallbackContext context)
@@ -60,7 +70,14 @@ namespace Rougelike2D
 
         public void OnCrouch(InputAction.CallbackContext context)
         {
-            throw new System.NotImplementedException();
+            if(context.started)
+            {
+                OnPlayerCrouch?.Invoke(true);
+            }
+            else if(context.canceled)
+            {
+                OnPlayerCrouch?.Invoke(false);
+            }
         }
 
         public void OnPrevious(InputAction.CallbackContext context)

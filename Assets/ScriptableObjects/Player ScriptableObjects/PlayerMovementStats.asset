@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 12c1b3608208ced40aac8560c4f2255a, type: 3}
-  m_Name: PlayerData
+  m_Name: PlayerMovementStats
   m_EditorClassIdentifier: 
   gravityStrength: -37.5
   gravityScale: 3.8226297
@@ -25,7 +25,6 @@ MonoBehaviour:
   runDeccelAmount: 50
   accelInAir: 1
   deccelInAir: 1
-  doConserveMomentum: 0
   jumpHeight: 3
   jumpTimeToApex: 0.4
   jumpForce: 15
@@ -40,8 +39,17 @@ MonoBehaviour:
   doTurnOnWallJump: 0
   slideSpeed: -12
   slideAccel: 12
-  coyoteTime: 0.2
-  jumpInputBufferTime: 0.5
+  dashAmount: 0
+  dashSpeed: 0
+  dashSleepTime: 0
+  dashAttackTime: 0
+  dashEndTime: 0
+  dashEndSpeed: {x: 0, y: 0}
+  dashEndRunLerp: 0
+  dashRefillTime: 0
+  dashInputBufferTime: 0.01
+  coyoteTime: 0.15
+  jumpInputBufferTime: 0.1
   GroundLayer:
     serializedVersion: 2
     m_Bits: 0
