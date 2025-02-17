@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Rougelike2D
 {
@@ -21,10 +23,12 @@ namespace Rougelike2D
       public bool IsFacingRight { get; private set; }
       public bool IsJumping { get; private set; }
       public bool IsFalling { get; private set; }
+      public bool IsLanding { get; private set; }
       
       public bool _isJumpFalling{ get; private set; }
       public bool IsSliding { get; private set; }
       public bool IsCrouching { get; private set; }
+      public bool IsDashing {get; private set;}
 
       public bool IsGrounded => LastOnGroundTime > 0;
       public bool IsOnWall => LastOnWallTime > 0;
@@ -34,15 +38,24 @@ namespace Rougelike2D
       public float LastOnWallTime { get; private set; }
       public float LastOnWallRightTime { get; private set; }
       public float LastOnWallLeftTime { get; private set; }
-
+      public float LastPressedDashTime {get; private set;}
+      public float LastPressedJumpTime { get; private set; }
+      
       //Jump
       private bool _isJumpCut;
-
-      public float LastPressedJumpTime { get; private set; }
-
+      //Dash
+      private bool _dashRefilling;
+      private float _dashesLeft;
+      private bool _isDashAttacking;
+      private Vector2 _lastDashDir;
+      
       private bool ToggleCrouch = true;
-
       #endregion
+
+      #region UnityActions events
+      public UnityAction OnJumpLand = delegate{};
+      #endregion
+
       private void Awake() 
       {
         _playerController = GetComponent<PlayerController>();
@@ -66,11 +79,19 @@ namespace Rougelike2D
         CheckCollision();
         ManageGravity();
         JumpCheck();
+        DashCheck();
       }
       private void FixedUpdate() 
       {
-        Run(1);
         MoveInput();
+        if (!IsDashing)
+		    {
+				  Run(1);
+		    }
+        else if (_isDashAttacking)
+        {
+          Run(_movementStats.dashEndRunLerp);
+        }
       }
 
       #region Input Handler
@@ -117,6 +138,10 @@ namespace Rougelike2D
         }
         //If we are not using toggle crouch, we can just set the crouch state to the input
         IsCrouching = crouchPressed;
+      }
+      private void DashInput()
+      {
+        LastPressedDashTime = _movementStats.dashInputBufferTime;
       }
       #endregion
       
@@ -230,7 +255,7 @@ namespace Rougelike2D
         //Convert this to a vector and apply to rigidbody
        _rb.AddForce(movement * Vector2.right, ForceMode2D.Force);
 
-       IsMoving = Mathf.Abs(_rb.linearVelocity.x) > 0.01f;
+       IsMoving =  Mathf.Abs(targetSpeed)>0.01f;
       }
 
       private void Turn()
@@ -248,51 +273,42 @@ namespace Rougelike2D
       }
       #endregion
 
-      
-
-        #region Check Jump Conditions
-        private void JumpCheck()
+      #region Check Jump Conditions
+      private void JumpCheck()
+      {
+        IsFalling = _rb.linearVelocity.y < -0.01f;
+        if (IsJumping && _rb.linearVelocity.y < 0)
         {
-          IsFalling = _rb.linearVelocity.y < 0;
-          if (IsJumping && _rb.linearVelocity.y < 0)
-          {
-            IsJumping = false;
-            _isJumpFalling = true;
-          }
-          if (LastOnGroundTime > 0 && !IsJumping)
-          {
-            _isJumpCut = false;
-            if(!IsJumping)
-              _isJumpFalling = false;
-          }
-          if (CanJump() && LastPressedJumpTime > 0)
-          {
-            IsJumping = true;
-            _isJumpCut = false;
+          IsJumping = false;
+          _isJumpFalling = true;
+        }
+        if (LastOnGroundTime > 0 && !IsJumping)
+        {
+          _isJumpCut = false;
+          if(!IsJumping)
             _isJumpFalling = false;
-            Jump();
-          }
         }
-        private bool CanJump()
+        if (CanJump() && LastPressedJumpTime > 0)
         {
-        return LastOnGroundTime > 0 && !IsJumping;
+          IsJumping = true;
+          _isJumpCut = false;
+          _isJumpFalling = false;
+          Jump();
         }
-        private bool CanWallJump()
-        {  
-          if(LastPressedJumpTime <= 0)
-            return false;
-          if(LastOnWallTime <= 0)
-            return false;
-          if(LastOnGroundTime > 0)
-            return false;
-
-          return true;
-        }
-        private bool CanJumpCut()
+        if(IsFalling && LastOnGroundTime > 0)
         {
-          return IsJumping && _rb.linearVelocity.y > 0;
+          OnJumpLand?.Invoke();
         }
-        #endregion
+      }
+      private bool CanJump()
+      {
+      return LastOnGroundTime > 0 && !IsJumping;
+      }
+      private bool CanJumpCut()
+      {
+        return IsJumping && _rb.linearVelocity.y > 0;
+      }
+      #endregion
       
       #region Jump
       private void Jump()
@@ -310,9 +326,97 @@ namespace Rougelike2D
       } 
       #endregion
 
-      #region Crouch
-      
+      #region Dash
+      private IEnumerator StartDash(Vector2 dir)
+	    {
+		    //Overall this method of dashing aims to mimic Celeste, if you're looking for
+		    // a more physics-based approach try a method similar to that used in the jump
+
+        LastOnGroundTime = 0;
+        LastPressedDashTime = 0;
+        float startTime = Time.time;
+        _dashesLeft--;
+        _isDashAttacking = true;
+        SetGravityScale(0);
+        //We keep the player's velocity at the dash speed during the "attack" phase (in celeste the first 0.15s)
+        while (Time.time - startTime <= _movementStats.dashAttackTime)
+        {
+          _rb.linearVelocity = dir.normalized * _movementStats.dashSpeed;
+          //Pauses the loop until the next frame, creating something of a Update loop. 
+          //This is a cleaner implementation opposed to multiple timers and this coroutine approach is actually what is used in Celeste :D
+          yield return null;
+        }
+
+        startTime = Time.time;
+
+        _isDashAttacking = false;
+
+        //Begins the "end" of our dash where we return some control to the player but still limit run acceleration (see Update() and Run())
+        SetGravityScale(_movementStats.gravityScale);
+        _rb.linearVelocity = _movementStats.dashEndSpeed * dir.normalized;
+
+        while (Time.time - startTime <= _movementStats.dashEndTime)
+        {
+          yield return null;
+        }
+
+        //Dash over
+        IsDashing = false;
+      }
+      private IEnumerator RefillDash(int amount)
+      {
+        //SHoet cooldown, so we can't constantly dash along the ground, again this is the implementation in Celeste, feel free to change it up
+        _dashRefilling = true;
+        yield return new WaitForSeconds(_movementStats.dashRefillTime);
+        _dashRefilling = false;
+        _dashesLeft = Mathf.Min(_movementStats.dashAmount, _dashesLeft + 1);
+      }
       #endregion
 
+      #region DASH CHECKS
+      private void DashCheck()
+      {
+        if (CanDash() && LastPressedDashTime > 0)
+        {
+          //Freeze game for split second. Adds juiciness and a bit of forgiveness over directional input
+          Sleep(_movementStats.dashSleepTime); 
+
+          //If not direction pressed, dash forward
+          if (_moveDirection != Vector2.zero)
+            _lastDashDir = _moveDirection;
+          else
+            _lastDashDir = IsFacingRight ? Vector2.right : Vector2.left;
+
+          IsDashing = true;
+          IsJumping = false;
+          _isJumpCut = false;
+
+          StartCoroutine(nameof(StartDash), _lastDashDir);
+        }
+      }
+      private bool CanDash()
+      {
+        if (!IsDashing && _dashesLeft < _movementStats.dashAmount && LastOnGroundTime > 0 && !_dashRefilling)
+        {
+          StartCoroutine(nameof(RefillDash), 1);
+        }
+
+      return _dashesLeft > 0;
+    }
+    private void Sleep(float duration)
+      {
+      //Method used so we don't need to call StartCoroutine everywhere
+      //nameof() notation means we don't need to input a string directly.
+      //Removes chance of spelling mistakes and will improve error messages if any
+      StartCoroutine(nameof(PerformSleep), duration);
+      }
+
+    private IEnumerator PerformSleep(float duration)
+      {
+      Time.timeScale = 0;
+      yield return new WaitForSecondsRealtime(duration); //Must be Realtime since timeScale with be 0 
+      Time.timeScale = 1;
+    }
+		#endregion
   }
 }

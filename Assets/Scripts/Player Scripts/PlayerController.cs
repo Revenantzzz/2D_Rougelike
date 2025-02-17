@@ -38,9 +38,11 @@ namespace Rougelike2D
         public PlayerCombatStats PlayerCombatStats { get => _playerCombatSatats; }
         PlayerMovementController movementController;
         PlayerCombatController combatController;
+        PlayerAnimationManager playerAnimationManager;
         #endregion
 
         public UnityAction OnPlayerAttack = delegate{}; //Player Attack Event
+        
 
         #region In Combat Variables
         public float AttackCounter { get; private set; } //Attack Counter in combo attack
@@ -52,6 +54,7 @@ namespace Rougelike2D
             Singelton();
             movementController = GetComponent<PlayerMovementController>();
             combatController = GetComponent<PlayerCombatController>();
+            playerAnimationManager = GetComponentInChildren<PlayerAnimationManager>();
         }
         private void Singelton()
         {
@@ -65,43 +68,55 @@ namespace Rougelike2D
                 Destroy(this);
             }
         }
-
         private void Start()
         {
             _inputReader.Enable();
 
             combatController.OnAttack += PlayerAttack;
+            movementController.OnJumpLand += PlayerLand;
         }
         void Update()
         {
             CheckState();
         }
-
+        #region Check Player State and Animation
         private void CheckState()
         {
-            //Check Player State
-            
-            if(CurrentState == PlayerState.Dead)
+            //Check Player State and Change Animation depending on the state
+            switch(playerAnimationManager.CurrentAnimation)
             {
-                return;
-            }
-            if(combatController.IsAttacking)
-            {
-                CurrentState = PlayerState.Attacking;
-                return;
+                case "Player_Attack":
+                    return;
+                case "Player_Jump":
+                    return;
+                case "Player_Fall":
+                    return;
+                case "Player_Land":
+                    return;
+                case "Player_ToRun":
+                    return; 
+                case "Player_BreakRun":
+                    return;
             }
             if(movementController.IsJumping)
             {
-                CurrentState = PlayerState.Jumping;
+                playerAnimationManager.ChangeAnimation(AnimationString.PlayerJump);
+                return;
+            }
+            if(movementController.IsFalling)
+            {
+                playerAnimationManager.ChangeAnimation(AnimationString.PlayerFall);
                 return;
             }
             if(movementController.IsMoving)
             {
-                CurrentState = PlayerState.Moving;
+                if(playerAnimationManager.CurrentAnimation != AnimationString.PlayerRunning)
+                    playerAnimationManager.ChangeAnimation(AnimationString.PlayerToRun);
                 return;
             }
-            CurrentState = PlayerState.Idle;
+            playerAnimationManager.ChangeAnimation("Player_Idle");
         }
+        #endregion
 
         private void PlayerAttack()
         {
@@ -110,7 +125,11 @@ namespace Rougelike2D
             {
                 AttackType = 0f;
             }
-            OnPlayerAttack?.Invoke();
+            playerAnimationManager.ChangeAnimation("Player_Attack", 0.1f, 0);
+        }
+        private void PlayerLand()
+        {
+            playerAnimationManager.ChangeAnimation("Player_Land", 0.1f, 0);
         }
     }
 }

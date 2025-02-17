@@ -70,7 +70,7 @@ namespace Rougelike2D
             IncreaseAttackCount();
             OnAttack?.Invoke();
 
-            yield return new WaitForSeconds(.5f); //Wait for the attack animation to finish
+            yield return new WaitForSeconds(1f); //Wait for the attack animation to finish
             
             //After done the attack, then set the IsAttacking to false
             IsAttacking = false;

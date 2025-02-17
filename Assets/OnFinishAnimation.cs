@@ -13,7 +13,9 @@ namespace Rougelike2D
             if(_nextAnimation != "")
             {
                 animationManager.ChangeAnimation(_nextAnimation, 0.05f, stateInfo.length);
+                return;
             }
+            animationManager.ChangeAnimation(AnimationString.PlayerIdle, 0.05f, stateInfo.length);
         }
 
         // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
