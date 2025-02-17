@@ -44,6 +44,8 @@ namespace Rougelike2D
                 StartCoroutine(Attack());
             }
         }
+
+        #region Attack
         private void AttackCheck()
         {
             //Check if player can attack or not
@@ -97,5 +99,8 @@ namespace Rougelike2D
                 AttackCount = 1;
             }
         }
+        #endregion
+
+        
     }
 }

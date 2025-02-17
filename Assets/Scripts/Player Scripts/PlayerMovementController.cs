@@ -24,9 +24,11 @@ namespace Rougelike2D
       
       public bool _isJumpFalling{ get; private set; }
       public bool IsSliding { get; private set; }
+      public bool IsCrouching { get; private set; }
 
       public bool IsGrounded => LastOnGroundTime > 0;
       public bool IsOnWall => LastOnWallTime > 0;
+
       //Player Timers
       public float LastOnGroundTime { get; private set; }
       public float LastOnWallTime { get; private set; }
@@ -37,6 +39,8 @@ namespace Rougelike2D
       private bool _isJumpCut;
 
       public float LastPressedJumpTime { get; private set; }
+
+      private bool ToggleCrouch = true;
 
       #endregion
       private void Awake() 
@@ -54,6 +58,7 @@ namespace Rougelike2D
       private void InputEvent()
       {
         _inputReader.OnPlayerJump += JumpInput;
+        
       }
       private void Update() 
       {
@@ -94,6 +99,24 @@ namespace Rougelike2D
           if(CanJumpCut())
             _isJumpCut = true;
         }
+      }
+      private void CrouchInput(bool crouchPressed)
+      {
+        if(_playerController.CurrentState == PlayerState.Attacking)
+        {
+          return;
+        }
+        //If we are using toggle crouch, we can just toggle the crouch state
+        if(ToggleCrouch)
+        {
+          if(crouchPressed)
+          {
+            IsCrouching = !IsCrouching;
+          }
+          return;
+        }
+        //If we are not using toggle crouch, we can just set the crouch state to the input
+        IsCrouching = crouchPressed;
       }
       #endregion
       
@@ -286,5 +309,10 @@ namespace Rougelike2D
         _rb.AddForce(Vector2.up * force, ForceMode2D.Impulse);
       } 
       #endregion
+
+      #region Crouch
+      
+      #endregion
+
   }
 }

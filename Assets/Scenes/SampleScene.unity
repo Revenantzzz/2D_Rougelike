@@ -417,7 +417,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &896630346
 Transform:
   m_ObjectHideFlags: 0
@@ -946,6 +946,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e78f3856e1c344f499f7f5e407363904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsComboAttack: 0
 --- !u!114 &1771431757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -958,6 +959,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e5099f7d0db5fa4584eb30cfc02cda2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Instance: {fileID: 0}
   _inputReader: {fileID: 11400000, guid: 81bb073733c05044793764d17b515572, type: 2}
   _playerMovementStats: {fileID: 11400000, guid: 4c725a584a8b1c34ea5d27700145f98b, type: 2}
   _playerCombatSatats: {fileID: 11400000, guid: a6f0a9615a9b34d4fbcea8a6ea5479a1, type: 2}
