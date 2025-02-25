@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -22,7 +23,13 @@ namespace Rougelike2D
     {
         //Connect all the components of player
         #region Varialbes and Components
-        public PlayerController Instance; //Singleton
+        public static PlayerController Instance; //Singleton
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void Initialize()
+        {
+            Instance = null;
+        }
 
         [Header("Player Components")]
         [SerializeField] private InputReader _inputReader;
@@ -72,64 +79,57 @@ namespace Rougelike2D
         {
             _inputReader.Enable();
 
+            InitializeEvent();
+        }
+        private void InitializeEvent()
+        {
             combatController.OnAttack += PlayerAttack;
+            movementController.OnMove += PlayerMove;
+            movementController.OnJump += PlayerJump;
+            movementController.OnFall += PlayerFall;
             movementController.OnJumpLand += PlayerLand;
         }
         void Update()
         {
-            CheckState();
+            
         }
-        #region Check Player State and Animation
-        private void CheckState()
-        {
-            //Check Player State and Change Animation depending on the state
-            switch(playerAnimationManager.CurrentAnimation)
-            {
-                case "Player_Attack":
-                    return;
-                case "Player_Jump":
-                    return;
-                case "Player_Fall":
-                    return;
-                case "Player_Land":
-                    return;
-                case "Player_ToRun":
-                    return; 
-                case "Player_BreakRun":
-                    return;
-            }
-            if(movementController.IsJumping)
-            {
-                playerAnimationManager.ChangeAnimation(AnimationString.PlayerJump);
-                return;
-            }
-            if(movementController.IsFalling)
-            {
-                playerAnimationManager.ChangeAnimation(AnimationString.PlayerFall);
-                return;
-            }
-            if(movementController.IsMoving)
-            {
-                if(playerAnimationManager.CurrentAnimation != AnimationString.PlayerRunning)
-                    playerAnimationManager.ChangeAnimation(AnimationString.PlayerToRun);
-                return;
-            }
-            playerAnimationManager.ChangeAnimation("Player_Idle");
-        }
-        #endregion
 
+        private void PlayerMove(Vector2 moveVector, float moveInput)
+        {
+            if(Mathf.Abs(moveVector.x) > 0.01f && Mathf.Abs(moveVector.y) < 0.01f)
+            {
+                playerAnimationManager.Play(AnimationString.PlayerRunning, false, false);
+            }
+            else if(Mathf.Abs(moveInput) < 0.01f)
+            {
+                playerAnimationManager.Play(AnimationString.PlayerIdle, false, false);
+            }
+        }
+        private void PlayerJump()
+        {
+            playerAnimationManager.Play(AnimationString.PlayerJump, true, false);
+        }
+        private void PlayerFall(bool isFalling)
+        {
+            if(isFalling)
+            {
+                playerAnimationManager.Play(AnimationString.PlayerFalling, true, false);
+            }
+        }
         private void PlayerAttack()
         {
             AttackCounter = combatController.AttackCount;
+            playerAnimationManager.SetFloatValue("Attack Count", AttackCounter);
             if(combatController.IsComboAttack)
             {
                 AttackType = 0f;
             }
-            playerAnimationManager.ChangeAnimation("Player_Attack", 0.1f, 0);
+            playerAnimationManager.SetFloatValue("Attack Type", AttackType);
+            playerAnimationManager.Play(AnimationString.PlayerAttack, true, false);
         }
         private void PlayerLand()
         {
-            playerAnimationManager.ChangeAnimation("Player_Land", 0.1f, 0);
+            playerAnimationManager.Play(AnimationString.PlayerLand, true, true);
         }
     }
 }

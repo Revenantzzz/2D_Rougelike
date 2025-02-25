@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using NUnit.Framework;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 namespace Rougelike2D
 {
@@ -15,6 +17,8 @@ namespace Rougelike2D
       private CollisionCheck _collisionCheck => _playerController.CollisionCheck;
 
       private Rigidbody2D _rb;
+
+      public bool CanMove = true;
 
       #region Variables
       private Vector2 _moveDirection;
@@ -43,6 +47,7 @@ namespace Rougelike2D
       
       //Jump
       private bool _isJumpCut;
+      private bool _isFallingLand;
       //Dash
       private bool _dashRefilling;
       private float _dashesLeft;
@@ -54,6 +59,9 @@ namespace Rougelike2D
 
       #region UnityActions events
       public UnityAction OnJumpLand = delegate{};
+      public UnityAction OnJump = delegate{};
+      public UnityAction<bool> OnFall = delegate{};
+      public UnityAction<Vector2, float> OnMove = delegate{};
       #endregion
 
       private void Awake() 
@@ -71,7 +79,7 @@ namespace Rougelike2D
       private void InputEvent()
       {
         _inputReader.OnPlayerJump += JumpInput;
-        
+        _inputReader.OnPlayerDash += DashInput;
       }
       private void Update() 
       {
@@ -79,7 +87,6 @@ namespace Rougelike2D
         CheckCollision();
         ManageGravity();
         JumpCheck();
-        DashCheck();
       }
       private void FixedUpdate() 
       {
@@ -97,7 +104,7 @@ namespace Rougelike2D
       #region Input Handler
       private void MoveInput()
       {
-        if(_playerController.CurrentState == PlayerState.Attacking)
+        if(!CanMove)
         {
           _moveDirection = Vector2.zero;
           return;
@@ -107,7 +114,7 @@ namespace Rougelike2D
       } 
       private void JumpInput(bool jumpPressed)
       {
-        if(_playerController.CurrentState == PlayerState.Attacking)
+        if(!CanMove)
         {
           return;
         }
@@ -123,7 +130,7 @@ namespace Rougelike2D
       }
       private void CrouchInput(bool crouchPressed)
       {
-        if(_playerController.CurrentState == PlayerState.Attacking)
+        if(!CanMove)
         {
           return;
         }
@@ -148,12 +155,13 @@ namespace Rougelike2D
       #region Timers
       private void UpdateTimers()
       {
-        LastOnGroundTime -= Time.deltaTime;
-        LastOnWallTime -= Time.deltaTime;
-        LastOnWallRightTime -= Time.deltaTime;
-        LastOnWallLeftTime -= Time.deltaTime;
+        if(LastOnGroundTime >= 0)LastOnGroundTime -= Time.deltaTime;
+        if(LastOnWallTime >= 0) LastOnWallTime -= Time.deltaTime;
+        if(LastOnWallRightTime >= 0) LastOnWallRightTime -= Time.deltaTime;
+        if(LastOnWallLeftTime >= 0)LastOnWallLeftTime -= Time.deltaTime;
 
-        LastPressedJumpTime -= Time.deltaTime;
+        if(LastPressedJumpTime >= 0) LastPressedJumpTime -= Time.deltaTime;
+        if(LastPressedDashTime >= 0) LastPressedDashTime -= Time.deltaTime;
       }
       #endregion
 
@@ -166,19 +174,19 @@ namespace Rougelike2D
           {
             LastOnGroundTime = _movementStats.coyoteTime;
           }
-          if(_collisionCheck.IsOnWall)
-          {
-            LastOnWallTime = _movementStats.coyoteTime;
-            if(!IsFacingRight)
-            {
-              LastOnWallRightTime = _movementStats.coyoteTime;
-            }
-            else
-            {
-              LastOnWallLeftTime = _movementStats.coyoteTime;
-            }
-          }
-          LastOnWallTime = Mathf.Max(LastOnWallRightTime, LastOnWallLeftTime);
+          // if(_collisionCheck.IsOnWall)
+          // {
+          //   LastOnWallTime = _movementStats.coyoteTime;
+          //   if(!IsFacingRight)
+          //   {
+          //     LastOnWallRightTime = _movementStats.coyoteTime;
+          //   }
+          //   else
+          //   {
+          //     LastOnWallLeftTime = _movementStats.coyoteTime;
+          //   }
+          // }
+          // LastOnWallTime = Mathf.Max(LastOnWallRightTime, LastOnWallLeftTime);
         }
       }
       #endregion
@@ -186,11 +194,6 @@ namespace Rougelike2D
       #region Manage Gravity
       private void ManageGravity()
       {
-        if (IsSliding)
-        {
-          SetGravityScale(0);
-          return;
-        }
         if (_rb.linearVelocity.y < 0 && _moveDirection.y < 0)
         {
           //Much higher gravity if holding down
@@ -254,8 +257,8 @@ namespace Rougelike2D
         float movement = speedDif * accelRate;
         //Convert this to a vector and apply to rigidbody
        _rb.AddForce(movement * Vector2.right, ForceMode2D.Force);
-
-       IsMoving =  Mathf.Abs(targetSpeed)>0.01f;
+      
+       OnMove?.Invoke(_rb.linearVelocity, _moveDirection.x);
       }
 
       private void Turn()
@@ -263,12 +266,12 @@ namespace Rougelike2D
         if (_moveDirection.x > 0 && !IsFacingRight)
         {
           IsFacingRight = true;
-          transform.Rotate(0, 180, 0);
+          transform.localScale = Vector3.one;
         }
         else if (_moveDirection.x < 0 && IsFacingRight)
         {
           IsFacingRight = false;
-          transform.Rotate(0, 180, 0);
+          transform.localScale = new Vector3(-1,1,1);
         }
       }
       #endregion
@@ -276,7 +279,13 @@ namespace Rougelike2D
       #region Check Jump Conditions
       private void JumpCheck()
       {
-        IsFalling = _rb.linearVelocity.y < -0.01f;
+        IsFalling = _rb.linearVelocity.y < -0.02f && LastOnGroundTime < 0;
+        if(IsFalling)
+        {
+          _isFallingLand = true;
+          Debug.Log(_rb.linearVelocityY);
+        }
+        OnFall?.Invoke(IsFalling);
         if (IsJumping && _rb.linearVelocity.y < 0)
         {
           IsJumping = false;
@@ -295,14 +304,15 @@ namespace Rougelike2D
           _isJumpFalling = false;
           Jump();
         }
-        if(IsFalling && LastOnGroundTime > 0)
+        if(_isFallingLand && LastOnGroundTime > 0)
         {
-          OnJumpLand?.Invoke();
+          _isFallingLand = false;
+          StartCoroutine(LandRecover());
         }
       }
       private bool CanJump()
       {
-      return LastOnGroundTime > 0 && !IsJumping;
+        return LastOnGroundTime > 0 && !IsJumping;
       }
       private bool CanJumpCut()
       {
@@ -323,100 +333,22 @@ namespace Rougelike2D
           force -= _rb.linearVelocity.y;
 
         _rb.AddForce(Vector2.up * force, ForceMode2D.Impulse);
+        OnJump?.Invoke();
       } 
-      #endregion
 
-      #region Dash
-      private IEnumerator StartDash(Vector2 dir)
-	    {
-		    //Overall this method of dashing aims to mimic Celeste, if you're looking for
-		    // a more physics-based approach try a method similar to that used in the jump
-
-        LastOnGroundTime = 0;
-        LastPressedDashTime = 0;
-        float startTime = Time.time;
-        _dashesLeft--;
-        _isDashAttacking = true;
-        SetGravityScale(0);
-        //We keep the player's velocity at the dash speed during the "attack" phase (in celeste the first 0.15s)
-        while (Time.time - startTime <= _movementStats.dashAttackTime)
-        {
-          _rb.linearVelocity = dir.normalized * _movementStats.dashSpeed;
-          //Pauses the loop until the next frame, creating something of a Update loop. 
-          //This is a cleaner implementation opposed to multiple timers and this coroutine approach is actually what is used in Celeste :D
-          yield return null;
-        }
-
-        startTime = Time.time;
-
-        _isDashAttacking = false;
-
-        //Begins the "end" of our dash where we return some control to the player but still limit run acceleration (see Update() and Run())
-        SetGravityScale(_movementStats.gravityScale);
-        _rb.linearVelocity = _movementStats.dashEndSpeed * dir.normalized;
-
-        while (Time.time - startTime <= _movementStats.dashEndTime)
-        {
-          yield return null;
-        }
-
-        //Dash over
-        IsDashing = false;
-      }
-      private IEnumerator RefillDash(int amount)
+      private IEnumerator LandRecover()
       {
-        //SHoet cooldown, so we can't constantly dash along the ground, again this is the implementation in Celeste, feel free to change it up
-        _dashRefilling = true;
-        yield return new WaitForSeconds(_movementStats.dashRefillTime);
-        _dashRefilling = false;
-        _dashesLeft = Mathf.Min(_movementStats.dashAmount, _dashesLeft + 1);
+          OnJumpLand?.Invoke();
+          CanMove = false;
+          yield return new WaitForSeconds(0.5f);
+          CanMove = true; 
       }
       #endregion
 
-      #region DASH CHECKS
-      private void DashCheck()
+      private void Dash()
       {
-        if (CanDash() && LastPressedDashTime > 0)
-        {
-          //Freeze game for split second. Adds juiciness and a bit of forgiveness over directional input
-          Sleep(_movementStats.dashSleepTime); 
-
-          //If not direction pressed, dash forward
-          if (_moveDirection != Vector2.zero)
-            _lastDashDir = _moveDirection;
-          else
-            _lastDashDir = IsFacingRight ? Vector2.right : Vector2.left;
-
-          IsDashing = true;
-          IsJumping = false;
-          _isJumpCut = false;
-
-          StartCoroutine(nameof(StartDash), _lastDashDir);
-        }
+        
       }
-      private bool CanDash()
-      {
-        if (!IsDashing && _dashesLeft < _movementStats.dashAmount && LastOnGroundTime > 0 && !_dashRefilling)
-        {
-          StartCoroutine(nameof(RefillDash), 1);
-        }
-
-      return _dashesLeft > 0;
-    }
-    private void Sleep(float duration)
-      {
-      //Method used so we don't need to call StartCoroutine everywhere
-      //nameof() notation means we don't need to input a string directly.
-      //Removes chance of spelling mistakes and will improve error messages if any
-      StartCoroutine(nameof(PerformSleep), duration);
-      }
-
-    private IEnumerator PerformSleep(float duration)
-      {
-      Time.timeScale = 0;
-      yield return new WaitForSecondsRealtime(duration); //Must be Realtime since timeScale with be 0 
-      Time.timeScale = 1;
-    }
-		#endregion
+      
   }
 }

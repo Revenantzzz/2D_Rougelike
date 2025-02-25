@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a75e5a23eca0c0542a6ef7d5e81c179f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextAnimation: Player_Idle
+  animation: Player_Idle
+  lockLayer: 0
+  crossfade: 0.05
+  cancel: 0
 --- !u!1102 &-8281763753934904009
 AnimatorState:
   serializedVersion: 6
@@ -157,7 +160,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a75e5a23eca0c0542a6ef7d5e81c179f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextAnimation: Player_Idle
+  animation: 
+  lockLayer: 0
+  crossfade: 0.02
+  cancel: 0
 --- !u!91 &9100000
 AnimatorController:
   m_ObjectHideFlags: 0
@@ -402,7 +408,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a75e5a23eca0c0542a6ef7d5e81c179f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextAnimation: Player_Idle
+  animation: 
+  lockLayer: 0
+  crossfade: 0.2
+  cancel: 0
 --- !u!114 &3925162874703663988
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -415,7 +424,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a75e5a23eca0c0542a6ef7d5e81c179f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextAnimation: Player_Running
+  animation: Player_Running
+  lockLayer: 0
+  crossfade: 0.05
+  cancel: 0
 --- !u!1102 &5153530370617327503
 AnimatorState:
   serializedVersion: 6
@@ -543,7 +555,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a75e5a23eca0c0542a6ef7d5e81c179f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextAnimation: Player_Falling
+  animation: Player_Falling
+  lockLayer: 1
+  crossfade: 0.05
+  cancel: 0
 --- !u!1102 &7668467755389026038
 AnimatorState:
   serializedVersion: 6
@@ -610,4 +625,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a75e5a23eca0c0542a6ef7d5e81c179f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextAnimation: Player_Jumping
+  animation: 
+  lockLayer: 0
+  crossfade: 0.2
+  cancel: 0

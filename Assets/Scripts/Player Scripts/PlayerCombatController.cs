@@ -16,6 +16,8 @@ namespace Rougelike2D
         public bool IsAttacking{get; private set;}
         public bool CanAttack {get; private set;}
 
+        private float _comboTimer = 0f;
+
         public UnityAction OnAttack = delegate{};
 
         public bool IsComboAttack;  
@@ -35,6 +37,8 @@ namespace Rougelike2D
         void Update()
         {
             AttackCheck();
+
+            if(_comboTimer >= 0) _comboTimer -= Time.deltaTime;
         }
 
         private void AttackInput(bool attack)
@@ -53,7 +57,7 @@ namespace Rougelike2D
             {
                 return;
             }
-            if(!_collisionCheck.IsGrounded)
+            if(_collisionCheck.IsGrounded)
             {
                 IsComboAttack = true;
             }
@@ -74,8 +78,11 @@ namespace Rougelike2D
             
             //After done the attack, then set the IsAttacking to false
             IsAttacking = false;
-            if(IsComboAttack)
+            //If player performed a combo attack then set _comboTimer then play can perform next attack in combo
+            //if not, start the attack cooldown
+            if(IsComboAttack && _comboTimer > 0)
             {
+                _comboTimer = 1.25f;
                 CanAttack = true;
             }
             else
@@ -85,18 +92,21 @@ namespace Rougelike2D
         }
         IEnumerator AttackCooldown()
         {
-            //if player stop attacking, then wait for half of a second to attack again
-            yield return new WaitForSeconds(.5f);
+            //if player stop attacking for a while
+            yield return new WaitForSeconds(.25f);
             CanAttack = true;
             AttackCount = 0;
+            _comboTimer = 0f;
         } 
         private void IncreaseAttackCount()
         {
             //Increase the attack count in combo attack
             AttackCount++;
+            _comboTimer = 1.25f;
             if(AttackCount > 3)
             {
                 AttackCount = 1;
+                _comboTimer = 0f;
             }
         }
         #endregion
