@@ -49,7 +49,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -63,7 +63,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -141,12 +141,12 @@ TextureImporter:
       name: Fire_WarriorAttack3_0
       rect:
         serializedVersion: 2
-        x: 48
-        y: 15
-        width: 40
-        height: 44
+        x: 26
+        y: 0
+        width: 66
+        height: 80
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -163,12 +163,12 @@ TextureImporter:
       name: Fire_WarriorAttack3_1
       rect:
         serializedVersion: 2
-        x: 187
-        y: 15
-        width: 70
-        height: 40
+        x: 150
+        y: 0
+        width: 109
+        height: 80
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -185,12 +185,12 @@ TextureImporter:
       name: Fire_WarriorAttack3_2
       rect:
         serializedVersion: 2
-        x: 334
-        y: 15
-        width: 67
-        height: 39
+        x: 293
+        y: 0
+        width: 111
+        height: 80
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -207,12 +207,12 @@ TextureImporter:
       name: Fire_WarriorAttack3_3
       rect:
         serializedVersion: 2
-        x: 480
-        y: 15
-        width: 65
-        height: 39
+        x: 439
+        y: 0
+        width: 106
+        height: 80
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -229,12 +229,12 @@ TextureImporter:
       name: Fire_WarriorAttack3_4
       rect:
         serializedVersion: 2
-        x: 624
-        y: 15
-        width: 34
-        height: 47
+        x: 603
+        y: 0
+        width: 67
+        height: 80
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -251,7 +251,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: d55217b32b8be8b4cb7b387fd08ee8b6
     internalID: 0
     vertices: []
     indices: 
@@ -260,7 +260,12 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Fire_WarriorAttack3_0: -5103298954574601552
+      Fire_WarriorAttack3_1: -5240348236898340009
+      Fire_WarriorAttack3_2: 1890148364227686490
+      Fire_WarriorAttack3_3: 2466228679713685696
+      Fire_WarriorAttack3_4: 5471164279140487328
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -58,7 +58,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -72,7 +72,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -151,11 +151,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 41
-        y: 15
-        width: 29
-        height: 49
+        y: 0
+        width: 30
+        height: 80
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -173,11 +173,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 185
-        y: 15
-        width: 29
-        height: 48
+        y: 0
+        width: 30
+        height: 80
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -195,11 +195,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 329
-        y: 15
-        width: 29
-        height: 48
+        y: 0
+        width: 30
+        height: 80
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -216,12 +216,12 @@ TextureImporter:
       name: Fire_WarriorIdle_3
       rect:
         serializedVersion: 2
-        x: 472
-        y: 15
+        x: 473
+        y: 0
         width: 30
-        height: 47
+        height: 80
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -238,12 +238,12 @@ TextureImporter:
       name: Fire_WarriorIdle_4
       rect:
         serializedVersion: 2
-        x: 616
-        y: 15
+        x: 617
+        y: 0
         width: 30
-        height: 47
+        height: 80
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -260,12 +260,12 @@ TextureImporter:
       name: Fire_WarriorIdle_5
       rect:
         serializedVersion: 2
-        x: 760
-        y: 15
+        x: 761
+        y: 0
         width: 30
-        height: 48
+        height: 80
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -283,11 +283,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 905
-        y: 15
-        width: 29
-        height: 48
+        y: 0
+        width: 30
+        height: 80
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -305,11 +305,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1049
-        y: 15
-        width: 29
-        height: 49
+        y: 0
+        width: 30
+        height: 80
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -326,7 +326,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5a169f3b6bc72924aa1c1d62da02c85c
     internalID: 0
     vertices: []
     indices: 
@@ -335,7 +335,15 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Fire_WarriorIdle_0: 5296555767818526437
+      Fire_WarriorIdle_1: -8462161318698121764
+      Fire_WarriorIdle_2: -4854555114847267770
+      Fire_WarriorIdle_3: 2665862987858058454
+      Fire_WarriorIdle_4: -7419472474624107056
+      Fire_WarriorIdle_5: 560730608615453070
+      Fire_WarriorIdle_6: -1827391772458822727
+      Fire_WarriorIdle_7: 3696218908798637452
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -58,7 +58,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -72,7 +72,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -151,11 +151,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 35
-        y: 15
+        y: 0
         width: 41
-        height: 45
+        height: 80
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -173,11 +173,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 179
-        y: 15
+        y: 0
         width: 40
-        height: 44
+        height: 80
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -195,11 +195,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 325
-        y: 15
+        y: 0
         width: 37
-        height: 44
+        height: 80
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -217,11 +217,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 466
-        y: 15
+        y: 0
         width: 39
-        height: 45
+        height: 80
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -239,11 +239,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 609
-        y: 15
+        y: 0
         width: 39
-        height: 45
+        height: 80
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -261,11 +261,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 754
-        y: 15
+        y: 0
         width: 39
-        height: 44
+        height: 80
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -283,11 +283,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 901
-        y: 15
+        y: 0
         width: 37
-        height: 44
+        height: 80
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -305,11 +305,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1043
-        y: 15
+        y: 0
         width: 40
-        height: 45
+        height: 80
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -326,7 +326,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 1291cbeabe37bd54a972450f2a1bec2e
     internalID: 0
     vertices: []
     indices: 
@@ -335,7 +335,15 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Fire_WarriorRun_0: 8620441816999443727
+      Fire_WarriorRun_1: -5852517897997107495
+      Fire_WarriorRun_2: 5577561119392635050
+      Fire_WarriorRun_3: 1996169985876597193
+      Fire_WarriorRun_4: 1689742655356397643
+      Fire_WarriorRun_5: 2630543449219525100
+      Fire_WarriorRun_6: 61789631945277448
+      Fire_WarriorRun_7: -748193811219636371
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

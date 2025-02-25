@@ -43,7 +43,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -57,7 +57,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -135,12 +135,12 @@ TextureImporter:
       name: Fire_WarriorFall_0
       rect:
         serializedVersion: 2
-        x: 32
-        y: 15
-        width: 36
-        height: 53
+        x: 28
+        y: 0
+        width: 50
+        height: 80
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -157,12 +157,12 @@ TextureImporter:
       name: Fire_WarriorFall_1
       rect:
         serializedVersion: 2
-        x: 175
-        y: 15
-        width: 37
-        height: 56
+        x: 172
+        y: 0
+        width: 50
+        height: 80
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -179,12 +179,12 @@ TextureImporter:
       name: Fire_WarriorFall_2
       rect:
         serializedVersion: 2
-        x: 326
-        y: 15
-        width: 30
-        height: 60
+        x: 317
+        y: 0
+        width: 50
+        height: 80
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -201,7 +201,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 2f458dc66b7e7b44daf68984913e27ad
     internalID: 0
     vertices: []
     indices: 
@@ -210,7 +210,10 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Fire_WarriorFall_0: -7513583266745057499
+      Fire_WarriorFall_1: 3040374116367729292
+      Fire_WarriorFall_2: -3822857925525891202
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -55,7 +55,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -69,7 +69,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -310,7 +310,14 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Fire_WarriorDash_0: 5081960507899540972
+      Fire_WarriorDash_1: -94153003713907478
+      Fire_WarriorDash_2: -6518509899979382404
+      Fire_WarriorDash_3: 8914678661652683258
+      Fire_WarriorDash_4: 7442577917363340348
+      Fire_WarriorDash_5: -180900218330127141
+      Fire_WarriorDash_6: 3439499466259162561
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
