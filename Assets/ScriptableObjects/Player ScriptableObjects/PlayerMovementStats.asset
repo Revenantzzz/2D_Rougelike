@@ -39,7 +39,7 @@ MonoBehaviour:
   doTurnOnWallJump: 0
   slideSpeed: -12
   slideAccel: 12
-  dashAmount: 1
+  dashAmount: 20
   dashSpeed: 20
   dashSleepTime: 0.05
   dashAttackTime: 0.15

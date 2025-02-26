@@ -14,6 +14,7 @@ namespace Rougelike2D
         public UnityAction<bool> OnPlayerAttack = delegate { };
         public UnityAction<bool> OnPlayerInteract = delegate { };
         public UnityAction<bool> OnPlayerCrouch = delegate { };
+        public UnityAction<bool> OnPlayerBlock = delegate {};
         public UnityAction OnPlayerDash = delegate{};
         public Vector2 Move => _inputActions.Player.Move.ReadValue<Vector2>();
 
@@ -80,7 +81,17 @@ namespace Rougelike2D
                 OnPlayerCrouch?.Invoke(false);
             }
         }
-
+        public void OnBlock(InputAction.CallbackContext context)
+        {
+            if(context.started)
+            {
+                OnPlayerCrouch?.Invoke(true);
+            }
+            else if(context.canceled)
+            {
+                OnPlayerCrouch?.Invoke(false);
+            }
+        }
         public void OnPrevious(InputAction.CallbackContext context)
         {
             throw new System.NotImplementedException();
@@ -95,6 +106,7 @@ namespace Rougelike2D
         {
             throw new System.NotImplementedException();
         }
+
     }
 }
     

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using NUnit.Framework;
 using TMPro;
+using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -51,7 +52,7 @@ namespace Rougelike2D
       //Dash
       private bool _dashRefilling;
       private float _dashesLeft;
-      private bool _isDashAttacking;
+      private bool _isDashing;
       private Vector2 _lastDashDir;
       
       private bool ToggleCrouch = true;
@@ -87,6 +88,7 @@ namespace Rougelike2D
         CheckCollision();
         ManageGravity();
         JumpCheck();
+        DashCheck();
       }
       private void FixedUpdate() 
       {
@@ -95,7 +97,7 @@ namespace Rougelike2D
 		    {
 				  Run(1);
 		    }
-        else if (_isDashAttacking)
+        else if (_isDashing)
         {
           Run(_movementStats.dashEndRunLerp);
         }
@@ -234,6 +236,7 @@ namespace Rougelike2D
       #region Movement
       private void Run(float lerpAmount)
       {
+        if(_isDashing) return;
         //Calculate the direction we want to move in and our desired velocity
         float targetSpeed = _moveDirection.x * _movementStats.runMaxSpeed;
         //We can reduce are control using Lerp() this smooths changes to are direction and speed
@@ -283,7 +286,6 @@ namespace Rougelike2D
         if(IsFalling)
         {
           _isFallingLand = true;
-          Debug.Log(_rb.linearVelocityY);
         }
         OnFall?.Invoke(IsFalling);
         if (IsJumping && _rb.linearVelocity.y < 0)
@@ -340,14 +342,40 @@ namespace Rougelike2D
       {
           OnJumpLand?.Invoke();
           CanMove = false;
-          yield return new WaitForSeconds(0.5f);
+          yield return new WaitForSeconds(0.3f);
           CanMove = true; 
       }
       #endregion
 
-      private void Dash()
+      private void DashCheck()
       {
-        
+        if(LastPressedDashTime > 0)
+        {
+          float dir = 0;
+          if(_moveDirection.x != 0)
+            dir = _moveDirection.normalized.x;
+          else
+            dir = IsFacingRight ? 1 : -1;
+          _isDashing = true;
+          StartCoroutine(Dash(dir));
+          return;
+        }
+      }
+      private IEnumerator Dash(float dir)
+      {
+		    LastPressedDashTime = 0;
+		    LastOnGroundTime = 0;
+
+        //We increase the force applied if we are falling
+        float force = _movementStats.dashAmount;
+        if (_rb.linearVelocity.normalized.x == dir)
+        {
+          force -= _rb.linearVelocity.x;
+        }
+        _rb.AddForce(Vector2.right * dir * force, ForceMode2D.Impulse);
+        yield return new WaitForSeconds(0.3f);
+        _isDashing = false;
+        //OnJump?.Invoke();
       }
       
   }
