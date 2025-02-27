@@ -33,21 +33,14 @@ MonoBehaviour:
   jumpHangTimeThreshold: 0
   jumpHangAccelerationMult: 1
   jumpHangMaxSpeedMult: 1
-  wallJumpForce: {x: 8.5, y: 20}
-  wallJumpRunLerp: 0.075
-  wallJumpTime: 0.3
-  doTurnOnWallJump: 0
   slideSpeed: -12
   slideAccel: 12
-  dashAmount: 1
-  dashSpeed: 20
-  dashSleepTime: 0.05
-  dashAttackTime: 0.15
-  dashEndTime: 0.15
-  dashEndSpeed: {x: 15, y: 15}
+  dashAmount: 5
+  dashTime: 0.3
+  dashRefill: 0.2
+  dashForce: 16.666666
   dashEndRunLerp: 0.5
-  dashRefillTime: 0.1
-  dashInputBufferTime: 0.1
+  dashInputBufferTime: 0.2
   coyoteTime: 0.2
   jumpInputBufferTime: 0.15
   GroundLayer:

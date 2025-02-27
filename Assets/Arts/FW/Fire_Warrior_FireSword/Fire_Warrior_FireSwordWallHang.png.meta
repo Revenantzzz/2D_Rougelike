@@ -235,7 +235,11 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Fire_Warrior_FireSwordWallHang_0: -6994317290560451427
+      Fire_Warrior_FireSwordWallHang_1: 5935974339997954773
+      Fire_Warrior_FireSwordWallHang_2: 1937368345010814855
+      Fire_Warrior_FireSwordWallHang_3: 3770236437320647047
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

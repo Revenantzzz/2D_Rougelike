@@ -44,13 +44,6 @@ namespace Rougelike2D
 	public float jumpHangAccelerationMult; 
 	public float jumpHangMaxSpeedMult; 				
 
-	[Header("Wall Jump")]
-	public Vector2 wallJumpForce; //The actual force (this time set by us) applied to the player when wall jumping.
-	[Space(5)]
-	[Range(0f, 1f)] public float wallJumpRunLerp; //Reduces the effect of player's movement while wall jumping.
-	[Range(0f, 1.5f)] public float wallJumpTime; //Time after wall jumping the player's movement is slowed for.
-	public bool doTurnOnWallJump; //Player will rotate to face wall jumping direction
-
 	[Space(20)]
 
 	[Header("Slide")]
@@ -58,18 +51,12 @@ namespace Rougelike2D
 	public float slideAccel;
 
 	[Header("Dash")]
-	public int dashAmount;
-	public float dashSpeed;
-	public float dashSleepTime; //Duration for which the game freezes when we press dash but before we read directional input and apply a force
-	[Space(5)]
-	public float dashAttackTime;
-	[Space(5)]
-	public float dashEndTime; //Time after you finish the inital drag phase, smoothing the transition back to idle (or any standard state)
-	public Vector2 dashEndSpeed; //Slows down player, makes dash feel more responsive (used in Celeste)
+	public float dashAmount;
+	public float dashTime; 
+	public float dashRefill;
+	[HideInInspector] public float dashForce;
+
 	[Range(0f, 1f)] public float dashEndRunLerp; //Slows the affect of player movement while dashing
-	[Space(5)]
-	public float dashRefillTime;
-	[Space(5)]
 	[Range(0.01f, 0.5f)] public float dashInputBufferTime;
 
     [Header("Assists")]
@@ -94,6 +81,8 @@ namespace Rougelike2D
 
 		//Calculate jumpForce using the formula (initialJumpVelocity = gravity * timeToJumpApex)
 		jumpForce = Mathf.Abs(gravityStrength) * jumpTimeToApex;
+
+		dashForce = dashAmount/ dashTime;
 
 		#region Variable Ranges
 		runAcceleration = Mathf.Clamp(runAcceleration, 0.01f, runMaxSpeed);

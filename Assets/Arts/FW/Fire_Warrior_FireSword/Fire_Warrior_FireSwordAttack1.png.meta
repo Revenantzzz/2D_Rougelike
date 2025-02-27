@@ -235,7 +235,11 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Fire_Warrior_FireSwordAttack1_0: 6153302565046304054
+      Fire_Warrior_FireSwordAttack1_1: 3833653873503018440
+      Fire_Warrior_FireSwordAttack1_2: -2000770776917957277
+      Fire_Warrior_FireSwordAttack1_3: 2182535921886826669
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

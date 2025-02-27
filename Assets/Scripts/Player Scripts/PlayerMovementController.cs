@@ -18,6 +18,7 @@ namespace Rougelike2D
 
       private Rigidbody2D _rb;
 
+      public bool CanGetInput = true;
       public bool CanMove = true;
 
       #region Variables
@@ -49,10 +50,9 @@ namespace Rougelike2D
       private bool _isJumpCut;
       private bool _isFallingLand;
       //Dash
-      private bool _dashRefilling;
+      private bool _canDash = true;
       private float _dashesLeft;
-      private bool _isDashAttacking;
-      private Vector2 _lastDashDir;
+      private bool _isDashing;
       
       private bool ToggleCrouch = true;
       #endregion
@@ -87,6 +87,7 @@ namespace Rougelike2D
         CheckCollision();
         ManageGravity();
         JumpCheck();
+        DashCheck();
       }
       private void FixedUpdate() 
       {
@@ -95,7 +96,7 @@ namespace Rougelike2D
 		    {
 				  Run(1);
 		    }
-        else if (_isDashAttacking)
+        else if (_isDashing)
         {
           Run(_movementStats.dashEndRunLerp);
         }
@@ -104,7 +105,7 @@ namespace Rougelike2D
       #region Input Handler
       private void MoveInput()
       {
-        if(!CanMove)
+        if(!CanGetInput)
         {
           _moveDirection = Vector2.zero;
           return;
@@ -114,7 +115,7 @@ namespace Rougelike2D
       } 
       private void JumpInput(bool jumpPressed)
       {
-        if(!CanMove)
+        if(!CanGetInput)
         {
           return;
         }
@@ -130,7 +131,7 @@ namespace Rougelike2D
       }
       private void CrouchInput(bool crouchPressed)
       {
-        if(!CanMove)
+        if(!CanGetInput)
         {
           return;
         }
@@ -148,6 +149,7 @@ namespace Rougelike2D
       }
       private void DashInput()
       {
+        if(!CanGetInput) return;
         LastPressedDashTime = _movementStats.dashInputBufferTime;
       }
       #endregion
@@ -234,6 +236,7 @@ namespace Rougelike2D
       #region Movement
       private void Run(float lerpAmount)
       {
+        if(!CanMove) return;
         //Calculate the direction we want to move in and our desired velocity
         float targetSpeed = _moveDirection.x * _movementStats.runMaxSpeed;
         //We can reduce are control using Lerp() this smooths changes to are direction and speed
@@ -283,7 +286,6 @@ namespace Rougelike2D
         if(IsFalling)
         {
           _isFallingLand = true;
-          Debug.Log(_rb.linearVelocityY);
         }
         OnFall?.Invoke(IsFalling);
         if (IsJumping && _rb.linearVelocity.y < 0)
@@ -339,15 +341,46 @@ namespace Rougelike2D
       private IEnumerator LandRecover()
       {
           OnJumpLand?.Invoke();
-          CanMove = false;
+          CanGetInput = false;
           yield return new WaitForSeconds(0.5f);
-          CanMove = true; 
+          CanGetInput = true; 
       }
       #endregion
 
-      private void Dash()
+      private void DashCheck()
       {
-        
+        if(LastPressedDashTime > 0 && _canDash)
+        {
+          float dir = 1f;
+          if(_moveDirection.x == 0)
+          {
+            if(!IsFacingRight) dir = -1;
+          }
+          else if(_moveDirection.x < 0)
+          {
+            dir = -1;
+          }
+          StartCoroutine(Dash(dir));
+        }
+      }
+
+      private IEnumerator Dash(float dir)
+      {
+		    LastPressedDashTime = 0;
+        _isDashing = true;
+        _canDash = false;
+
+        float force = _movementStats.dashForce;
+        if (Mathf.Abs(_rb.linearVelocity.x) > 0)
+          force -= _rb.linearVelocity.x * dir;
+
+        _rb.AddForce(Vector2.right * force * dir, ForceMode2D.Impulse);
+        CanMove = false;
+        yield return new WaitForSeconds(_movementStats.dashTime);
+        _isDashing = false;
+        CanMove = true;
+        yield return new WaitForSeconds(_movementStats.dashRefill);
+        _canDash = true;
       }
       
   }

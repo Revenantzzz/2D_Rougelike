@@ -210,7 +210,10 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Fire_Warrior_FireSwordJump_0: -9076097535367597133
+      Fire_Warrior_FireSwordJump_1: 3094412958070512072
+      Fire_Warrior_FireSwordJump_2: -7727352111260698521
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
