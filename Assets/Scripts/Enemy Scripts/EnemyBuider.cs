@@ -1,3 +1,4 @@
+using UnityEditor.Animations;
 using UnityEngine;
 
 namespace Rougelike2D
@@ -9,6 +10,8 @@ namespace Rougelike2D
         Transform FirePoint;
         float maxHealth;
         float moveSpeed;
+        Sprite enemySprite;
+        AnimatorController animatorController;
 
         public EnemyBuilder SetEnemyPrefab(GameObject enemyPrefab)
         {
@@ -35,12 +38,24 @@ namespace Rougelike2D
             this.FirePoint = FirePoint;
             return this;
         }
+        public EnemyBuilder SetEnemySprite(Sprite enemySprite)
+        {
+            this.enemySprite = enemySprite;
+            return this;
+        }
+        public EnemyBuilder SetAnimator(AnimatorController animatorController)
+        {
+            this.animatorController = animatorController;
+            return this;
+        }
         public GameObject Build()
         {
             GameObject enemy = GameObject.Instantiate(enemyPrefab);
             //enemy.GetComponent<EnemyController>().SetMaxHP(maxHealth);
-            //enemy.GetComponent<EnemyController>().SetMoveSpeed(moveSpeed);
+            enemy.GetComponent<EnemyController>().SetMoveSpeed(moveSpeed);
             //enemy.GetComponent<EnemyController>().SetFirePoint(FirePoint);
+            enemy.GetComponentInChildren<SpriteRenderer>().sprite = enemySprite;
+            enemy.GetComponentInChildren<Animator>().runtimeAnimatorController = animatorController;
             return enemy;
         }
     }

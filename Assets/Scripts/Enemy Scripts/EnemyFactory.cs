@@ -5,6 +5,7 @@ namespace Rougelike2D
     public abstract class EnemyFactory
     {
         public abstract GameObject EnemyCreate(EnemyTypeSO enemyType);
+        
     }
 
     public class MeleeEnemyFactory : EnemyFactory
@@ -13,6 +14,8 @@ namespace Rougelike2D
         {
             EnemyBuilder enemyBuilder = new EnemyBuilder();
             enemyBuilder.SetEnemyPrefab(enemyType.EnemyPrefab);
+            enemyBuilder.SetAnimator(enemyType.Animator);
+            enemyBuilder.SetEnemySprite(enemyType.EnemySprite);
             enemyBuilder.SetMaxHP(enemyType.MaxHealth);
             enemyBuilder.SetMoveSpeed(enemyType.MoveSpeed);
             return enemyBuilder.Build();
@@ -24,6 +27,8 @@ namespace Rougelike2D
         {
             EnemyBuilder enemyBuilder = new EnemyBuilder();
             enemyBuilder.SetEnemyPrefab(enemyType.EnemyPrefab);
+            enemyBuilder.SetAnimator(enemyType.Animator);
+            enemyBuilder.SetEnemySprite(enemyType.EnemySprite);
             enemyBuilder.SetMaxHP(enemyType.MaxHealth);
             enemyBuilder.SetMoveSpeed(enemyType.MoveSpeed);
             enemyBuilder.SetFirePoint(enemyType.FirePoint);

@@ -1,3 +1,4 @@
+using UnityEditor.Animations;
 using UnityEngine;
 
 namespace Rougelike2D
@@ -6,6 +7,8 @@ namespace Rougelike2D
     public class EnemyTypeSO : ScriptableObject
     {
         public GameObject EnemyPrefab;
+        public AnimatorController Animator;
+        public Sprite EnemySprite;
         public float MaxHealth;
         public float MoveSpeed;
 

@@ -283,7 +283,6 @@ namespace Rougelike2D
         if(IsFalling)
         {
           _isFallingLand = true;
-          Debug.Log(_rb.linearVelocityY);
         }
         OnFall?.Invoke(IsFalling);
         if (IsJumping && _rb.linearVelocity.y < 0)
