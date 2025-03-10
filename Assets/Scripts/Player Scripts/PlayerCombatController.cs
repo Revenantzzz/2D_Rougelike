@@ -6,8 +6,9 @@ using UnityEngine.Events;
 
 namespace Rougelike2D
 {
-    public class PlayerCombatController : MonoBehaviour
+    public class PlayerCombatController : Damageable
     {
+        [SerializeField] private PlayerCombatStats _playerCombatStats;
         PlayerController _playerController;
         private InputReader _inputReader =>_playerController.InputReader;
         private CollisionCheck _collisionCheck => _playerController.CollisionCheck;
@@ -25,6 +26,7 @@ namespace Rougelike2D
         private void Awake() 
         {
             _playerController = GetComponent<PlayerController>();
+            SetMaxHealth(_playerCombatStats.MaxHealth);
         }
         private void Start() 
         {
