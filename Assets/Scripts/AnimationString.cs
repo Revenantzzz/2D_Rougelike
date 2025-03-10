@@ -17,5 +17,13 @@ namespace Rougelike2D
         public static readonly string PlayerLand = "Player_Land";    
         #endregion
 
+        #region Enemy Animations
+        #region Skeleton Animations
+        public static readonly string SkeletonIdle = "Skeleton_Idle";
+        public static readonly string SkeletonMove = "Skeleton_Move";
+        
+        #endregion
+        #endregion
+
     }
 }
