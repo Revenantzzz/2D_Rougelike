@@ -4,16 +4,10 @@ namespace Rougelike2D
 {
     public class Attacks : MonoBehaviour
     {
-        [SerializeField] AttackStrategy attackStrategy;
+        private int damage = 0;
 
-        void Start()
-        {
-            attackStrategy.Initialize();
-        }
-        public void SetStrategy(AttackStrategy strategy)
-        {
-            attackStrategy = strategy;
-            attackStrategy.Initialize();
-        }
+        public void SetDmg(int dmg) => damage = dmg;
+        public int GetDmg() => damage;
+        
     }
 }

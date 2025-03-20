@@ -9,12 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7022fb0ed12e08c4cb0747c5c9295769, type: 3}
+  m_Script: {fileID: 0}
   m_Name: Skeleton Enemy
-  m_EditorClassIdentifier: 
-  EnemyPrefab: {fileID: 8610135324636851681, guid: db09024d35521144d8fa39fee745bf8e, type: 3}
-  Animator: {fileID: 9100000, guid: 11ca8579f674cae42a7b0a1c9a45bb2d, type: 2}
-  EnemySprite: {fileID: 6991849013916550155, guid: 9315b039b9a8e8e49b8642332d3ace32, type: 3}
-  MaxHealth: 100
-  MoveSpeed: 10
-  FirePoint: {fileID: 0}
+  m_EditorClassIdentifier: Assembly-CSharp:Rougelike2D:EnemyNPCSO
+  prefab: {fileID: 0}
+  sprite: {fileID: 0}
+  IsDamageable: 1
+  damageableStrategy: {fileID: 0}
+  MaxHealth: 0
+  locomotionStrategy: {fileID: 0}
+  MoveSpeed: 0
+  attackStrategy: {fileID: 0}
+  Atk: 0
