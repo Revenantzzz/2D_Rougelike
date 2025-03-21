@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using NUnit.Framework;
 using TMPro;
 using UnityEditor.Callbacks;
@@ -35,16 +36,13 @@ namespace Rougelike2D
       public bool IsCrouching { get; private set; }
       public bool IsDashing {get; private set;}
 
-      public bool IsGrounded => LastOnGroundTime > 0;
-      public bool IsOnWall => LastOnWallTime > 0;
+      public bool IsGrounded => _collisionCheck.IsGrounded;
 
       //Player Timers
-      public float LastOnGroundTime { get; private set; }
-      public float LastOnWallTime { get; private set; }
-      public float LastOnWallRightTime { get; private set; }
-      public float LastOnWallLeftTime { get; private set; }
-      public float LastPressedDashTime {get; private set;}
-      public float LastPressedJumpTime { get; private set; }
+      List<Timer> timerList;
+      private CountDownTimer CoyoteTimer;
+      private CountDownTimer PressedDashTimer;
+      private CountDownTimer PressedJumpTimer;
       
       //Jump
       private bool _isJumpCut;
@@ -122,7 +120,7 @@ namespace Rougelike2D
         }
         if (jumpPressed)
         {
-          LastPressedJumpTime = _movementStats.jumpInputBufferTime;
+          PressedJumpTimer.StartTimer();
         }
         else
         {
@@ -150,20 +148,18 @@ namespace Rougelike2D
       }
       private void DashInput()
       {
-        LastPressedDashTime = _movementStats.dashInputBufferTime;
+        PressedDashTimer.StartTimer();
       }
       #endregion
       
       #region Timers
       private void UpdateTimers()
       {
-        if(LastOnGroundTime >= 0)LastOnGroundTime -= Time.deltaTime;
-        if(LastOnWallTime >= 0) LastOnWallTime -= Time.deltaTime;
-        if(LastOnWallRightTime >= 0) LastOnWallRightTime -= Time.deltaTime;
-        if(LastOnWallLeftTime >= 0)LastOnWallLeftTime -= Time.deltaTime;
-
-        if(LastPressedJumpTime >= 0) LastPressedJumpTime -= Time.deltaTime;
-        if(LastPressedDashTime >= 0) LastPressedDashTime -= Time.deltaTime;
+        CoyoteTimer = new CountDownTimer(_movementStats.coyoteTime);
+        PressedDashTimer = new CountDownTimer(_movementStats.dashInputBufferTime);
+        PressedJumpTimer = new CountDownTimer(_movementStats.jumpInputBufferTime);
+        
+        timerList = new(3){CoyoteTimer, PressedDashTimer, PressedJumpTimer};
       }
       #endregion
 
@@ -172,23 +168,10 @@ namespace Rougelike2D
       {
         if (!IsJumping)
 		    {
-          if(_collisionCheck.IsGrounded)
+          if(!_collisionCheck.IsGrounded)
           {
-            LastOnGroundTime = _movementStats.coyoteTime;
+            CoyoteTimer.StartTimer();
           }
-          // if(_collisionCheck.IsOnWall)
-          // {
-          //   LastOnWallTime = _movementStats.coyoteTime;
-          //   if(!IsFacingRight)
-          //   {
-          //     LastOnWallRightTime = _movementStats.coyoteTime;
-          //   }
-          //   else
-          //   {
-          //     LastOnWallLeftTime = _movementStats.coyoteTime;
-          //   }
-          // }
-          // LastOnWallTime = Mathf.Max(LastOnWallRightTime, LastOnWallLeftTime);
         }
       }
       #endregion
@@ -244,7 +227,7 @@ namespace Rougelike2D
 
         float accelRate;
 
-        if (LastOnGroundTime > 0)
+        if (IsGrounded || CoyoteTimer.IsRunning)
           accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ?_movementStats.runAccelAmount :_movementStats.runDeccelAmount;
         else
           accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ?_movementStats.runAccelAmount *_movementStats.accelInAir :_movementStats.runDeccelAmount *_movementStats.deccelInAir;
@@ -282,7 +265,7 @@ namespace Rougelike2D
       #region Check Jump Conditions
       private void JumpCheck()
       {
-        IsFalling = _rb.linearVelocity.y < -0.02f && LastOnGroundTime < 0;
+        IsFalling = _rb.linearVelocity.y < -0.02f && IsGrounded;
         if(IsFalling)
         {
           _isFallingLand = true;
@@ -293,20 +276,20 @@ namespace Rougelike2D
           IsJumping = false;
           _isJumpFalling = true;
         }
-        if (LastOnGroundTime > 0 && !IsJumping)
+        if ((IsGrounded || CoyoteTimer.IsRunning) && !IsJumping)
         {
           _isJumpCut = false;
           if(!IsJumping)
             _isJumpFalling = false;
         }
-        if (CanJump() && LastPressedJumpTime > 0)
+        if (CanJump() && PressedJumpTimer.IsRunning)
         {
           IsJumping = true;
           _isJumpCut = false;
           _isJumpFalling = false;
           Jump();
         }
-        if(_isFallingLand && LastOnGroundTime > 0)
+        if(_isFallingLand && (IsGrounded ||CoyoteTimer.IsRunning))
         {
           _isFallingLand = false;
           StartCoroutine(LandRecover());
@@ -314,7 +297,7 @@ namespace Rougelike2D
       }
       private bool CanJump()
       {
-        return LastOnGroundTime > 0 && !IsJumping;
+        return (IsGrounded || CoyoteTimer.IsRunning) && !IsJumping;
       }
       private bool CanJumpCut()
       {
@@ -326,8 +309,8 @@ namespace Rougelike2D
       private void Jump()
       {
         //Ensures we can't call Jump multiple times from one press
-		    LastPressedJumpTime = 0;
-		    LastOnGroundTime = 0;
+		    PressedJumpTimer.StopTimer();
+		    CoyoteTimer.StopTimer();
 
         //We increase the force applied if we are falling
         float force = _movementStats.jumpForce;
@@ -349,7 +332,7 @@ namespace Rougelike2D
 
       private void DashCheck()
       {
-        if(LastPressedDashTime > 0)
+        if(PressedDashTimer.IsRunning)
         {
           float dir = 0;
           if(_moveDirection.x != 0)
@@ -363,8 +346,8 @@ namespace Rougelike2D
       }
       private IEnumerator Dash(float dir)
       {
-		    LastPressedDashTime = 0;
-		    LastOnGroundTime = 0;
+		    PressedDashTimer.StopTimer();
+		    CoyoteTimer.StopTimer();
 
         //We increase the force applied if we are falling
         float force = _movementStats.dashAmount;

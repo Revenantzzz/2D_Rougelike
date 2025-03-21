@@ -5,18 +5,6 @@ using UnityEngine.Events;
 
 namespace Rougelike2D
 {
-    public enum PlayerState
-    {
-        Idle,
-        Moving,
-        Jumping,
-        Falling,
-        Hit,
-        Attacking,
-        Blocking,
-
-        Dead
-    }
     [RequireComponent(typeof(PlayerMovementController))]
     [RequireComponent(typeof(PlayerCombatController))]
     public class PlayerController : MonoBehaviour
@@ -38,7 +26,6 @@ namespace Rougelike2D
         [SerializeField] private CollisionCheck _collisionCheck;
 
         //Variables
-        public PlayerState CurrentState { get; private set; } 
         public CollisionCheck CollisionCheck { get => _collisionCheck; }  
         public InputReader InputReader { get => _inputReader; } 
         public PlayerMovementStats PlayerMovementStats { get => _playerMovementStats; }
