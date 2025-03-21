@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: Skeleton Enemy
   m_EditorClassIdentifier: Assembly-CSharp:Rougelike2D:EnemyNPCSO
-  prefab: {fileID: 0}
-  sprite: {fileID: 0}
+  prefab: {fileID: 8610135324636851681, guid: db09024d35521144d8fa39fee745bf8e, type: 3}
+  sprite: {fileID: -7385789195546760866, guid: d153d089ec577b245afd49a3422fef9b, type: 3}
   IsDamageable: 1
-  damageableStrategy: {fileID: 0}
-  MaxHealth: 0
-  locomotionStrategy: {fileID: 0}
-  MoveSpeed: 0
-  attackStrategy: {fileID: 0}
-  Atk: 0
+  damageableStrategy: {fileID: 11400000, guid: 2308f080be5a02e4eae6c8365fc0a984, type: 2}
+  MaxHealth: 100
+  locomotionStrategy: {fileID: 11400000, guid: a489e81f39a1d96498593dfd74d872d7, type: 2}
+  MoveSpeed: 4
+  attackStrategy: {fileID: 11400000, guid: f0f43de99f495e041883d8a8fe097efe, type: 2}
+  Atk: 10

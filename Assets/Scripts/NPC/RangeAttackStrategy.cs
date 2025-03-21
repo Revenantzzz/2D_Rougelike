@@ -21,6 +21,7 @@ namespace Rougelike2D
         }
         public override void Attack()
         {
+            projectilePool[0].transform.parent = null;
             
         }
     }
