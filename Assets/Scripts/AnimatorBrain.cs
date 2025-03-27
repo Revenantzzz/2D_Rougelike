@@ -19,25 +19,12 @@ namespace Rougelike2D
             this.IsLocked = false;
         }
 
-        public void Play(string animation, bool isLocking, bool bypassLock, float crossfade = .05f)
+        public void Play(string animation, float crossfade = .05f)
         {
             if(animation == string.Empty)
         {
             DefaultAnimation(0);
             return;
-        }
-
-        if (IsLocked && !bypassLock) 
-            return;
-
-        IsLocked = isLocking;
-
-        if(bypassLock)
-        {
-            foreach (var item in _animator.GetBehaviours<OnFinishAnimation>())
-            {
-                item.cancel = true;
-            }
         }
 
         if (CurrentAnimation == animation) return;

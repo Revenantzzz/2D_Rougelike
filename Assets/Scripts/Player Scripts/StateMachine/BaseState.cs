@@ -1,33 +1,35 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Accessibility;
 
 namespace Rougelike2D
 {
     public abstract class BaseState : IState
     {
-        private PlayerController playerController;
-        private Animator animator;
+        protected PlayerController playerController;
+        protected AnimatorBrain animatorBrain;
 
-        public BaseState(PlayerController controller, Animator animator)
+        public BaseState(PlayerController controller, AnimatorBrain animatorBrain)
         {
             this.playerController = controller;
-            this.animator = animator;
+            this.animatorBrain = animatorBrain;
         }
-        public void EnterState()
+        public virtual void EnterState()
         {
             // 
         }
 
-        public void ExitState()
+        public virtual void ExitState()
         {
             // 
         }
 
-        public void StateFixedUpdate()
+        public virtual void StateFixedUpdate()
         {
             // 
         }
 
-        public void StateUpdate()
+        public virtual void StateUpdate()
         {
             // 
         }

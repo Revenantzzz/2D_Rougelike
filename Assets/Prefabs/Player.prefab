@@ -131,8 +131,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3031259482498945148}
   - component: {fileID: 2827314663661056656}
-  - component: {fileID: 5828814785083557882}
   - component: {fileID: 7210370221886639651}
+  - component: {fileID: 1805320547631887980}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -210,7 +210,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &5828814785083557882
+--- !u!114 &7210370221886639651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2381368626254606571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5106de14546a094f80376a0860dfffb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &1805320547631887980
 Animator:
   serializedVersion: 7
   m_ObjectHideFlags: 0
@@ -232,18 +244,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &7210370221886639651
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2381368626254606571}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5106de14546a094f80376a0860dfffb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3497967519962002047
 GameObject:
   m_ObjectHideFlags: 0

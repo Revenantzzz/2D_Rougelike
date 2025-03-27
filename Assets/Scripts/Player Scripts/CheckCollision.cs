@@ -50,21 +50,21 @@ namespace Rougelike2D
                 if (Physics2D.OverlapBox(_rightWallCheckPoint.position, _wallCheckSize, 0, _groundLayer))
                 {
                     IsOnWall = true;
-                    if(!Physics2D.Raycast(_cliffCheckPoint.position, UnityEngine.Vector2.right, 2f, _groundLayer))
-                    {
-                        IsOnCliff = true;
-                        Debug.Log("cliff");
-                    }
+                    // if(!Physics2D.Raycast(_cliffCheckPoint.position, UnityEngine.Vector2.right, 2f, _groundLayer))
+                    // {
+                    //     IsOnCliff = true;
+                    //     Debug.Log("cliff");
+                    // }
                 }
 
                 //Left Wall Check
                 else if (Physics2D.OverlapBox(_leftWallCheckPoint.position, _wallCheckSize, 0, _groundLayer))
                 {
-                    IsOnWall = true;
-                    if(!Physics2D.Raycast(_cliffCheckPoint.position, Vector2.left, 2f, _groundLayer))
-                    {
-                        IsOnCliff = true;
-                    }
+                    // IsOnWall = true;
+                    // if(!Physics2D.Raycast(_cliffCheckPoint.position, Vector2.left, 2f, _groundLayer))
+                    // {
+                    //     IsOnCliff = true;
+                    // }
                 }
             }        
         }
@@ -75,8 +75,8 @@ namespace Rougelike2D
             Gizmos.color = Color.blue;
             Gizmos.DrawWireCube(_rightWallCheckPoint.position, _wallCheckSize);
             Gizmos.DrawWireCube(_leftWallCheckPoint.position, _wallCheckSize);
-            Gizmos.DrawLine(_cliffCheckPoint.position, new Vector2(1, 0));
-            Gizmos.DrawLine(_cliffCheckPoint.position, Vector2.left);
+            //Gizmos.DrawLine(_cliffCheckPoint.position, new Vector2(1, 0));
+            //Gizmos.DrawLine(_cliffCheckPoint.position, Vector2.left);
         }
     }
 }

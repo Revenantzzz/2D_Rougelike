@@ -8,13 +8,13 @@ namespace Rougelike2D
     public class PlayerAnimationManager : AnimatorBrain
     {
 
-        void Start()
+        void Awake()
         {
             Initialize(GetComponent<Animator>(), AnimationString.PlayerIdle, DefaultAnimation);
         }
         private void DefaultAnimation(int num)
         {
-            Play(AnimationString.PlayerIdle, false, false);
+            Play(AnimationString.PlayerIdle);
         }
 
     }   

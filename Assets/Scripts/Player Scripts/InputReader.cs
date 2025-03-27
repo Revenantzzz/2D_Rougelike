@@ -15,7 +15,7 @@ namespace Rougelike2D
         public UnityAction<bool> OnPlayerInteract = delegate { };
         public UnityAction<bool> OnPlayerCrouch = delegate { };
         public UnityAction<bool> OnPlayerBlock = delegate {};
-        public UnityAction OnPlayerDash = delegate{};
+        public UnityAction OnPlayerRoll = delegate{};
         public Vector2 Move => _inputActions.Player.Move.ReadValue<Vector2>();
 
         public void Enable()
@@ -48,9 +48,9 @@ namespace Rougelike2D
                 OnPlayerJump?.Invoke(false);
             }
         }
-        public void OnDash(InputAction.CallbackContext context)
+        public void OnRoll(InputAction.CallbackContext context)
         {
-            if(context.started) OnPlayerDash?.Invoke();
+            if(context.started) OnPlayerRoll?.Invoke();
         }
 
         public void OnAttack(InputAction.CallbackContext context)

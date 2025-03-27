@@ -10,7 +10,7 @@ namespace Rougelike2D
         }
         private void DefaultAnimation(int num)
         {
-            Play(AnimationString.SkeletonIdle, false, false);
+            Play(AnimationString.SkeletonIdle);
         }
     }
 }

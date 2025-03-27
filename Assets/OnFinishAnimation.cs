@@ -23,7 +23,7 @@ namespace Rougelike2D
 
             AnimatorBrain target = animator.GetComponent<AnimatorBrain>();
             target.IsLocked = false;
-            target.Play(animation, lockLayer, false, crossfade);
+            target.Play(animation, crossfade);
         }
     }
     }

@@ -42,22 +42,18 @@ namespace Rougelike2D
 	public float jumpHangTimeThreshold; //Speeds (close to 0) where the player will experience extra "jump hang". The player's velocity.y is closest to 0 at the jump's apex (think of the gradient of a parabola or quadratic function)
 	[Space(0.5f)]
 	public float jumpHangAccelerationMult; 
-	public float jumpHangMaxSpeedMult; 				
+	public float jumpHangMaxSpeedMult; 	
+	public float landRecoverTime;			
 
 	[Space(20)]
+	[Header("Roll")]
+	public float RollAmount;
+	public float RollTime; 
+	public float RollCoolDown;
+	public int RollRefill;
+	[HideInInspector] public float RollForce;
 
-	[Header("Slide")]
-	public float slideSpeed;
-	public float slideAccel;
-
-	[Header("Dash")]
-	public float dashAmount;
-	public float dashTime; 
-	public float dashRefill;
-	[HideInInspector] public float dashForce;
-
-	[Range(0f, 1f)] public float dashEndRunLerp; //Slows the affect of player movement while dashing
-	[Range(0.01f, 0.5f)] public float dashInputBufferTime;
+	[Range(0.01f, 0.5f)] public float RollInputBufferTime;
 
     [Header("Assists")]
 	[Range(0.01f, 0.5f)] public float coyoteTime; //Grace period after falling off a platform, where you can still jump
@@ -82,7 +78,7 @@ namespace Rougelike2D
 		//Calculate jumpForce using the formula (initialJumpVelocity = gravity * timeToJumpApex)
 		jumpForce = Mathf.Abs(gravityStrength) * jumpTimeToApex;
 
-		dashForce = dashAmount/ dashTime;
+		RollForce = RollAmount/ RollTime;
 
 		#region Variable Ranges
 		runAcceleration = Mathf.Clamp(runAcceleration, 0.01f, runMaxSpeed);

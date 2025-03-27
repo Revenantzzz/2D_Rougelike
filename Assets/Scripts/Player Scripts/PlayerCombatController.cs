@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.Events;
@@ -8,26 +9,29 @@ namespace Rougelike2D
 {
     public class PlayerCombatController : MonoBehaviour
     {
-        [SerializeField] private PlayerCombatStats _playerCombatStats;
+        private PlayerCombatStats _stats => _playerController.PlayerCombatStats;
         PlayerController _playerController;
-        private InputReader _inputReader =>_playerController.InputReader;
+        private InputReader _inputReader => _playerController.InputReader;
         private CollisionCheck _collisionCheck => _playerController.CollisionCheck;
 
-        public int AttackCount{get; private set;}
-        public bool IsAttacking{get; private set;}
-        public bool CanAttack {get; private set;}
+        public int AttackCount { get; private set; }
+        public bool IsAttacking { get; private set; }
+        public bool CanAttack { get; private set; }
 
-        private float _comboTimer = 0f;
+        public UnityAction OnAttack = delegate { };
 
-        public UnityAction OnAttack = delegate{};
+        public bool IsComboAttack;
+        List<Timer> timerList;
+        public CountDownTimer AttackTimer;
+        CountDownTimer attackCoolDownTimer;
+        CountDownTimer comboTimer;
 
-        public bool IsComboAttack;  
-          
-        private void Awake() 
+        private void Awake()
         {
             _playerController = GetComponent<PlayerController>();
+            SetupTimer();
         }
-        private void Start() 
+        private void Start()
         {
             _inputReader.Enable();
             _inputReader.OnPlayerAttack += AttackInput;
@@ -39,14 +43,32 @@ namespace Rougelike2D
         {
             AttackCheck();
 
-            if(_comboTimer >= 0) _comboTimer -= Time.deltaTime;
+            UpdateTimer();
         }
+        private void SetupTimer()
+        {
+            AttackTimer = new CountDownTimer(_stats.AttackTime);
+            attackCoolDownTimer = new CountDownTimer(_stats.AttackCoolDown);
+            comboTimer = new CountDownTimer(3f);
 
+            AttackTimer.OnStartTimer += () => HandleAttack();
+            AttackTimer.OnStopTimer += () => attackCoolDownTimer.StartTimer();
+            comboTimer.OnStopTimer += () => {AttackCount = 0;};
+
+            timerList = new(3) { AttackTimer, attackCoolDownTimer, comboTimer };
+        }
+        private void UpdateTimer()
+        {
+            foreach (Timer timer in timerList)
+            {
+                timer.Tick(Time.deltaTime);
+            }
+        }
         private void AttackInput(bool attack)
         {
-            if(attack && CanAttack)
+            if (attack && CanAttack && !AttackTimer.IsRunning && !attackCoolDownTimer.IsRunning)
             {
-                StartCoroutine(Attack());
+                AttackTimer.StartTimer();
             }
         }
 
@@ -54,11 +76,11 @@ namespace Rougelike2D
         private void AttackCheck()
         {
             //Check if player can attack or not
-            if(IsAttacking)
+            if (IsAttacking)
             {
                 return;
             }
-            if(_collisionCheck.IsGrounded)
+            if (_collisionCheck.IsGrounded)
             {
                 IsComboAttack = true;
             }
@@ -67,51 +89,29 @@ namespace Rougelike2D
                 IsComboAttack = false;
             }
         }
-        IEnumerator Attack()
+        void HandleAttack()
         {
-            //Excute Attack
-            IsAttacking = true;
-            CanAttack = false;
-            IncreaseAttackCount();
-            OnAttack?.Invoke();
-
-            yield return new WaitForSeconds(1f); //Wait for the attack animation to finish
-            
-            //After done the attack, then set the IsAttacking to false
-            IsAttacking = false;
-            //If player performed a combo attack then set _comboTimer then play can perform next attack in combo
-            //if not, start the attack cooldown
-            if(IsComboAttack && _comboTimer > 0)
+            if (IsComboAttack)
             {
-                _comboTimer = 1.25f;
-                CanAttack = true;
+                if (AttackCount > 0 && !comboTimer.IsRunning)
+                {
+                    comboTimer.StopTimer();
+                }
+                IncreaseAttackCount();
             }
-            else
-            {       
-                StartCoroutine(AttackCooldown());
-            }
+            OnAttack.Invoke();
         }
-        IEnumerator AttackCooldown()
-        {
-            //if player stop attacking for a while
-            yield return new WaitForSeconds(.25f);
-            CanAttack = true;
-            AttackCount = 0;
-            _comboTimer = 0f;
-        } 
         private void IncreaseAttackCount()
         {
             //Increase the attack count in combo attack
             AttackCount++;
-            _comboTimer = 1.25f;
-            if(AttackCount > 3)
+            comboTimer.StartTimer();
+            if (AttackCount > 3 || !comboTimer.IsRunning)
             {
                 AttackCount = 1;
-                _comboTimer = 0f;
+                comboTimer.StopTimer();
             }
         }
-        #endregion
-
-        
+        #endregion        
     }
 }

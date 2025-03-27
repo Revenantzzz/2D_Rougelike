@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12c1b3608208ced40aac8560c4f2255a, type: 3}
   m_Name: PlayerMovementStats
   m_EditorClassIdentifier: 
-  gravityStrength: -100
-  gravityScale: 10.19368
-  fallGravityMult: 3
-  maxFallSpeed: 25
+  gravityStrength: -66.666664
+  gravityScale: 6.795786
+  fallGravityMult: 2
+  maxFallSpeed: 20
   fastFallGravityMult: 3
   maxFastFallSpeed: 30
   runMaxSpeed: 10
@@ -25,29 +25,21 @@ MonoBehaviour:
   runDeccelAmount: 50
   accelInAir: 0.75
   deccelInAir: 0.75
-  jumpHeight: 2
-  jumpTimeToApex: 0.2
+  jumpHeight: 3
+  jumpTimeToApex: 0.3
   jumpForce: 20
   jumpCutGravityMult: 3
   jumpHangGravityMult: 1
   jumpHangTimeThreshold: 0
   jumpHangAccelerationMult: 1
   jumpHangMaxSpeedMult: 1
-  wallJumpForce: {x: 8.5, y: 20}
-  wallJumpRunLerp: 0.075
-  wallJumpTime: 0.3
-  doTurnOnWallJump: 0
-  slideSpeed: -12
-  slideAccel: 12
-  dashAmount: 20
-  dashSpeed: 20
-  dashSleepTime: 0.05
-  dashAttackTime: 0.15
-  dashEndTime: 0.15
-  dashEndSpeed: {x: 15, y: 15}
-  dashEndRunLerp: 0.5
-  dashRefillTime: 0.1
-  dashInputBufferTime: 0.1
+  landRecoverTime: 0.2
+  RollAmount: 10
+  RollTime: 0.5
+  RollCoolDown: 0.5
+  RollRefill: 0
+  RollForce: 20
+  RollInputBufferTime: 0.1
   coyoteTime: 0.2
   jumpInputBufferTime: 0.15
   GroundLayer:

@@ -22,7 +22,7 @@ namespace Rougelike2D
         }
         public void FixedUpdate() 
         {
-            currentState.State.StateUpdate();
+            currentState.State.StateFixedUpdate();
         }
 
         public void SetState(IState state)

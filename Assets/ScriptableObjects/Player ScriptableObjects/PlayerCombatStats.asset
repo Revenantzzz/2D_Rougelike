@@ -12,3 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c9fa333c312cc44b82217f49fff1194, type: 3}
   m_Name: PlayerCombatStats
   m_EditorClassIdentifier: 
+  MaxHealth: 0
+  AttackTime: 1
+  AttackCoolDown: 0.5
