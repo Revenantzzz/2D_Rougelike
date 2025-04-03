@@ -10,7 +10,15 @@ namespace Rougelike2D
         public override void EnterState()
         {
             base.EnterState();
-            animatorBrain.Play(AnimationString.PlayerLand);
+            if(playerController.IsFastFalling)
+            {
+                Debug.Log("land hard");
+                animatorBrain.Play("Player_LandHard");
+            }
+            else
+            {
+                animatorBrain.Play(AnimationString.PlayerLand);
+            }     
             playerController.StopMovement();
         }
         public override void ExitState()

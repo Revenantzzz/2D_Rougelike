@@ -10,7 +10,7 @@ namespace Rougelike2D
         {
             base.EnterState();
             playerController.StopMovement();
-            animatorBrain.SetFloatValue("Attack Count", playerController.AttackCounter);
+            animatorBrain.SetFloatValue("Attack Count", playerController.AttackCount);
             animatorBrain.Play(AnimationString.PlayerAttack);
         }
     }

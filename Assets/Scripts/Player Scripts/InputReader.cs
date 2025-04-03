@@ -85,11 +85,11 @@ namespace Rougelike2D
         {
             if(context.started)
             {
-                OnPlayerCrouch?.Invoke(true);
+                OnPlayerBlock?.Invoke(true);
             }
             else if(context.canceled)
             {
-                OnPlayerCrouch?.Invoke(false);
+                OnPlayerBlock?.Invoke(false);
             }
         }
         public void OnPrevious(InputAction.CallbackContext context)

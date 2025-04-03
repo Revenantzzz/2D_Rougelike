@@ -11,7 +11,14 @@ namespace Rougelike2D
         public override void EnterState()
         {
             base.EnterState();
-            animatorBrain.Play(AnimationString.PlayerRunning);
+             if(playerController.IsMoving)
+            {
+                animatorBrain.Play(AnimationString.PlayerToRun);
+            }  
+            else
+            {
+                animatorBrain.Play(AnimationString.PlayerIdle);
+            }
         }
         public override void StateUpdate()
         {
@@ -20,8 +27,8 @@ namespace Rougelike2D
         public override void StateFixedUpdate()
         {
             base.StateFixedUpdate();
-            playerController.HandleMovement();
-            if(playerController.IsMovingInput)
+            playerController.Run();
+            if(playerController.IsMoving)
             {
                 animatorBrain.Play(AnimationString.PlayerRunning);
             }  

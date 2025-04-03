@@ -23,8 +23,8 @@ namespace Rougelike2D
         {
             base.StateFixedUpdate();
             bool isJumpFalling = false;
-            playerController.HandleJump();
-            playerController.HandleMovement();
+            playerController.JumpCheck();
+            playerController.Run();
             if (playerController.IsJumping)
             {
                 animatorBrain.Play(AnimationString.PlayerJumping);
