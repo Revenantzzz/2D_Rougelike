@@ -6,6 +6,9 @@ namespace Rougelike2D
     public class PlayerCombatStats : ScriptableObject
     {
         public int MaxHealth;
+
+        public float AttackTime;
+        public float AttackCoolDown;
         
     }
 }

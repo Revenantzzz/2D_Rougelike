@@ -8,7 +8,6 @@ namespace Rougelike2D
     {
         private Animator _animator;
         public string CurrentAnimation {get; private set;}
-        public bool IsLocked {get; set;}
         private Action<int> DefaultAnimation;
 
         protected void Initialize( Animator animator, string startAnimation, Action<int> DefaultAnimation)
@@ -16,28 +15,14 @@ namespace Rougelike2D
             this._animator = animator;
             this.DefaultAnimation = DefaultAnimation;
             this.CurrentAnimation = startAnimation;
-            this.IsLocked = false;
         }
 
-        public void Play(string animation, bool isLocking, bool bypassLock, float crossfade = .05f)
+        public void Play(string animation, float crossfade = .05f)
         {
             if(animation == string.Empty)
         {
             DefaultAnimation(0);
             return;
-        }
-
-        if (IsLocked && !bypassLock) 
-            return;
-
-        IsLocked = isLocking;
-
-        if(bypassLock)
-        {
-            foreach (var item in _animator.GetBehaviours<OnFinishAnimation>())
-            {
-                item.cancel = true;
-            }
         }
 
         if (CurrentAnimation == animation) return;

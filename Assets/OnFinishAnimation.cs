@@ -6,7 +6,6 @@ namespace Rougelike2D
     public class OnFinishAnimation : StateMachineBehaviour
     {
     [SerializeField] private string animation;
-    [SerializeField] private bool lockLayer;
     [SerializeField] private float crossfade = 0.05f;
     [HideInInspector] public bool cancel = false;
 
@@ -22,8 +21,7 @@ namespace Rougelike2D
             if (cancel) yield break;
 
             AnimatorBrain target = animator.GetComponent<AnimatorBrain>();
-            target.IsLocked = false;
-            target.Play(animation, lockLayer, false, crossfade);
+            target.Play(animation, crossfade);
         }
     }
     }

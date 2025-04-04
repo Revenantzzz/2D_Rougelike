@@ -60,7 +60,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Dash",
+                    "name": "Roll",
                     "type": "Button",
                     "id": "c1fd520e-d3d3-4de2-b3bd-bc0785a93c5c",
                     "expectedControlType": "",
@@ -282,7 +282,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Dash",
+                    "action": "Roll",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
