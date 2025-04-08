@@ -11,7 +11,7 @@ namespace Rougelike2D
         public override void EnterState()
         {
             base.EnterState();
-            playerController.StopMovement();
+            playerController.HorizontalMovement.StopMovement();
             animatorBrain.Play("Player_ToBlock");
         }
         public override void StateFixedUpdate()

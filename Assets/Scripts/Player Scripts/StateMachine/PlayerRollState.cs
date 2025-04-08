@@ -10,7 +10,7 @@ namespace Rougelike2D
 
         public override void EnterState()
         {
-            playerController.StopMovement();
+            playerController.HorizontalMovement.StopMovement();
             base.EnterState();
             playerController.HandleRoll();
             animatorBrain.Play("Player_Roll");
@@ -22,7 +22,7 @@ namespace Rougelike2D
         public override void ExitState()
         {
             base.ExitState();
-            playerController.StopMovement();
+            playerController.HorizontalMovement.StopMovement();
         }
     }
 }

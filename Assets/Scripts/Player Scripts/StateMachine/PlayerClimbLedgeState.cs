@@ -9,7 +9,7 @@ namespace Rougelike2D
         }
         public override void EnterState()
         {
-            playerController.StopMovement();
+            playerController.HorizontalMovement.StopMovement();
             base.EnterState();
             animatorBrain.Play("Player_LedgeGrab");
         }

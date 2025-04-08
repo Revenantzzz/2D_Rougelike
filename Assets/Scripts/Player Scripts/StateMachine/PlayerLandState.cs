@@ -19,12 +19,12 @@ namespace Rougelike2D
             {
                 animatorBrain.Play(AnimationString.PlayerLand);
             }     
-            playerController.StopMovement();
+            playerController.HorizontalMovement.StopMovement();
         }
-        public override void ExitState()
+        public override void StateUpdate()
         {
-            base.ExitState();
-            playerController.StopMovement();
+            base.StateUpdate();
+            playerController.HorizontalMovement.StopMovement();
         }
     }
 }

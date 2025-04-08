@@ -27,7 +27,7 @@ namespace Rougelike2D
         public override void StateFixedUpdate()
         {
             base.StateFixedUpdate();
-            playerController.Run();
+            playerController.HandleMovement();
             if(playerController.IsMoving)
             {
                 animatorBrain.Play(AnimationString.PlayerRunning);

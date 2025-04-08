@@ -11,16 +11,6 @@ namespace Rougelike2D
         public Sprite sprite;
         public bool IsDamageable = true;
 
-        [Header("Health")]
-        public DamageableStrategy damageableStrategy;
-        public int MaxHealth;
-
-        [Header("Movement")]
-        public LocomotionStrategy locomotionStrategy;
-        public float MoveSpeed;
-
-        [Header("Attack")]
-        public AttackStrategy attackStrategy;
         public int Atk;
     }
     [CreateAssetMenu(fileName = "FriendlyNPCData", menuName = "Scriptable Objects/NPCData/FriendlyNPC")]

@@ -33,8 +33,10 @@ MonoBehaviour:
   jumpHangTimeThreshold: 0
   jumpHangAccelerationMult: 1
   jumpHangMaxSpeedMult: 1
-  landRecoverTime: 0.15
+  landRecoverTime: 0.2
   fastLandRecoverTime: 0.3
+  LedgeClimbTime: 0
+  LedgeClimbRecover: 0
   PlayerPosYOffset: 0.6
   RollAmount: 10
   RollTime: 0.5

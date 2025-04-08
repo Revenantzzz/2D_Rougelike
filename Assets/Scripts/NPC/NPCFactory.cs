@@ -15,7 +15,6 @@ namespace Rougelike2D
             GameObject prefab = Object.Instantiate(data.prefab);
             NPCCharacter characterScript = prefab.GetComponent<NPCCharacter>();
             characterScript.SetSprite(data.sprite);
-            characterScript.SetStrategy(data.locomotionStrategy, data.damageableStrategy, data.attackStrategy);
             return prefab;
         }
     }

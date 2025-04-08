@@ -40,7 +40,7 @@ namespace Rougelike2D
             {
                 IsGrounded = false;
                 //Ground Check
-                if (Physics2D.OverlapBox(_groundCheckPoint.position, _groundCheckSize, 0, _groundLayer) && !_controller.IsJumping) //checks if set box overlaps with ground
+                if (Physics2D.OverlapBox(_groundCheckPoint.position, _groundCheckSize, 0, _groundLayer) && !_controller.IsJumping && !_controller.IsFalling) //checks if set box overlaps with ground
                 {
                     IsGrounded = true;
                 }

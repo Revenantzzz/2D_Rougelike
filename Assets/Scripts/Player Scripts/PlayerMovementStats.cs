@@ -43,7 +43,7 @@ namespace Rougelike2D
 	public float jumpHangMaxSpeedMult; 	
 	public float landRecoverTime;	
 	public float fastLandRecoverTime;	
-	[Space(1f)]
+	[Space(5f)]
 
 	public float LedgeClimbTime;
 	public float LedgeClimbRecover;

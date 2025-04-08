@@ -1,3 +1,6 @@
+using Unity.Collections;
+using UnityEngine;
+
 namespace Rougelike2D
 {
     public class PlayerAttackState : BaseState
@@ -9,7 +12,7 @@ namespace Rougelike2D
         public override void EnterState()
         {
             base.EnterState();
-            playerController.StopMovement();
+            playerController.HorizontalMovement.StopMovement();
             animatorBrain.SetFloatValue("Attack Count", playerController.AttackCount);
             animatorBrain.Play(AnimationString.PlayerAttack);
         }
